@@ -1,8 +1,15 @@
 import { app, BrowserWindow, ipcMain } from "electron";
 import isDev from "electron-is-dev";
 import * as path from "path";
+import { AppContext } from "@/main/context";
+import { IpcReceiverService } from "@/main/services/IpcReceiverService";
 
-let mainWindow: BrowserWindow;
+let mainWindow: BrowserWindow | null;
+
+const context: AppContext = {
+  getAppWindow: () => mainWindow,
+  ipcService: new IpcReceiverService()
+};
 
 ipcMain.on("test-message", (event, arg: string) => {});
 
@@ -18,6 +25,18 @@ const createWindow = async () => {
     : `file::${path.join(__dirname, "../build/index.html")}`;
 
   await mainWindow.loadURL(startUrl);
+
+  if (isDev) {
+    mainWindow.webContents.once("dom-ready", () => {
+      mainWindow!.webContents.openDevTools({
+        mode: "right"
+      });
+    });
+  }
+
+  mainWindow.on("closed", () => {
+    mainWindow = null;
+  });
 };
 
 app.on("ready", () => {

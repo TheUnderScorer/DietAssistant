@@ -13,6 +13,11 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
     "lib": [
       "dom",
       "dom.iterable",
@@ -20,7 +25,8 @@
     ]
   },
   "include": [
-    "src/main/*.ts"
+    "src/main/*.ts",
+    "src/typings/*.ts"
   ],
   "exclude": [
     "node_modules"
