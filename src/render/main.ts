@@ -2,16 +2,16 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
-import { IpcSenderService } from "@/render/services/IpcSenderService";
+import { IpcRendererService } from "@/render/services/IpcRendererService";
 
-const data = {
-  ipcSender: new IpcSenderService()
-};
-
-createApp(App, {
-  data() {
-    return data;
-  }
-})
+const ipcSender = new IpcRendererService();
+createApp(App)
   .use(router)
+  .use(app => {
+    app.mixin({
+      beforeCreate() {
+        this.$ipcSender = new IpcRendererService();
+      }
+    });
+  })
   .mount("#app");

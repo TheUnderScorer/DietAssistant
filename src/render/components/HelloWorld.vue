@@ -1,6 +1,9 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <button @click="handleClick">
+      Load PDF
+    </button>
     <p>
       For a guide and recipes on how to configure / customize this project,<br />
       check out the
@@ -120,6 +123,8 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
+import { IpcRendererService } from "@/render/services/IpcRendererService";
+import { RecipeEvents } from "@/shared/features/recipes/types";
 
 @Options({
   props: {
@@ -128,6 +133,20 @@ import { Options, Vue } from "vue-class-component";
 })
 export default class HelloWorld extends Vue {
   msg!: string;
+
+  $ipcSender!: IpcRendererService;
+
+  mounted() {
+    console.log({ sender: this.$ipcSender });
+  }
+
+  async handleClick() {
+    const path = await this.$ipcSender.send<never, string>(
+      RecipeEvents.LoadRecipe
+    );
+
+    console.log({ path });
+  }
 }
 </script>
 

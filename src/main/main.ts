@@ -1,22 +1,30 @@
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow } from "electron";
 import isDev from "electron-is-dev";
 import * as path from "path";
 import { AppContext } from "@/main/context";
-import { IpcReceiverService } from "@/main/services/IpcReceiverService";
+import { IpcMainService } from "./services/IpcMainService";
 
 let mainWindow: BrowserWindow | null;
 
 const context: AppContext = {
   getAppWindow: () => mainWindow,
-  ipcService: new IpcReceiverService()
+  ipcService: new IpcMainService()
 };
 
-ipcMain.on("test-message", (event, arg: string) => {});
+context.ipcService.receive("test", (event, args) => {
+  console.log({ event, args });
+
+  return true;
+});
 
 const createWindow = async () => {
   mainWindow = new BrowserWindow({
     height: 600,
-    width: 800
+    width: 800,
+    title: "Diet assistant",
+    webPreferences: {
+      preload: path.join(app.getAppPath(), "preload.js")
+    }
   });
 
   // Either use vue server when on dev, or production build otherwise.

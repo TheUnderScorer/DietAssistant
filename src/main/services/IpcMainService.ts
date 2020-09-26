@@ -8,15 +8,21 @@ export type IpcServiceCallback<
   ReturnValue = any
 > = (event: IpcMainEvent, args: Args) => ReturnValue | Promise<ReturnValue>;
 
-export class IpcReceiverService {
+export class IpcMainService {
   constructor(private readonly ipc: IpcMain = ipcMain) {}
 
-  send<Args extends object = object, ReturnValue = any>(
+  receive<Args extends object = object, ReturnValue = any>(
     name: string,
     callback: IpcServiceCallback<Args, ReturnValue>
   ) {
     const handler = async (event: IpcMainEvent, args: Args) => {
-      event.returnValue = await callback(event, args);
+      try {
+        event.returnValue = await callback(event, args);
+      } catch (e) {
+        event.returnValue = {
+          error: e
+        };
+      }
     };
 
     this.ipc.on(name, handler);

@@ -1,7 +1,7 @@
-import { IpcReceiverService } from "@/main/services/IpcReceiverService";
+import { IpcMainService } from "./services/IpcMainService";
 import { BrowserWindow } from "electron";
 
 export interface AppContext {
-  ipcService: IpcReceiverService;
+  ipcService: IpcMainService;
   getAppWindow: () => BrowserWindow | null;
 }

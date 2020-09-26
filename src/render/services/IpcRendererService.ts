@@ -1,12 +1,18 @@
 import { IpcRenderer } from "electron";
 
-export class IpcSenderService {
+export class IpcRendererService {
   constructor(private readonly ipc: IpcRenderer = window.ipcRenderer) {}
 
   async send<Arg extends object = object, ReturnValue = any>(
     name: string,
     arg?: Arg
   ): Promise<ReturnValue> {
-    return this.ipc.sendSync(name, arg);
+    const result = this.ipc.sendSync(name, arg);
+
+    if (result.error) {
+      throw new Error(result.error.message);
+    }
+
+    return result;
   }
 }

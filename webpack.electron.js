@@ -4,8 +4,11 @@ const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
   mode: "development",
-  entry: "./src/main/main.ts",
-  target: "node",
+  entry: {
+    main: "./src/main/main.ts",
+    preload: "./src/main/preload.js"
+  },
+  target: "electron-main",
   devtool: "inline-source-map",
   externals: [nodeExternals()],
   module: {
@@ -31,7 +34,7 @@ module.exports = {
     ]
   },
   output: {
-    filename: "main.js",
+    filename: "[name].js",
     path: path.resolve(__dirname, "build-electron")
   }
 };
