@@ -1,8 +1,8 @@
 declare global {
-    interface Window {
-        ipcRenderer: Electron.IpcRenderer;
-        appPath: string;
-    }
+  interface Window {
+    ipcRenderer: Electron.IpcRenderer;
+    appPath: string;
+  }
 }
 
 export {};

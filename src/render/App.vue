@@ -1,30 +1,33 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
-  <router-view />
+  <Journal />
 </template>
 
+<script lang="ts">
+import { Options, Vue } from "vue-class-component";
+import Journal from "@/render/views/Journal.vue";
+
+@Options({
+  components: {
+    Journal
+  }
+})
+export default class App extends Vue {}
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+.img-fluid {
+  max-width: 100%;
+  height: auto;
 }
 
-#nav {
-  padding: 30px;
+body {
+  font-family: "Raleway", sans-serif;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+input,
+textarea {
+  border: none;
+  background: transparent;
+  width: 100%;
 }
 </style>

@@ -3,3 +3,9 @@ declare module "*.vue" {
   const component: ReturnType<typeof defineComponent>;
   export default component;
 }
+
+declare module "*.jpg" {
+  declare const src: any;
+
+  export default src;
+}
