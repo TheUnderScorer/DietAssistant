@@ -4,7 +4,6 @@ import "./registerServiceWorker";
 import router from "./router";
 import { IpcRendererService } from "@/render/services/IpcRendererService";
 
-const ipcSender = new IpcRendererService();
 createApp(App)
   .use(router)
   .use(app => {
