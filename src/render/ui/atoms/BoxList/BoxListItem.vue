@@ -17,31 +17,19 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-
-@Options({
+export default {
   props: {
     title: String,
     withInput: Boolean,
     labelFor: String,
-    wrapperComponent: String,
+    wrapperComponent: {
+      type: String,
+      default: "li"
+    },
     className: String,
     valueClassName: String
   }
-})
-export default class BoxListItem extends Vue {
-  title!: string;
-
-  withInput = false;
-
-  labelFor?: string;
-
-  wrapperComponent = "li";
-
-  className = "";
-
-  valueClassName = "";
-}
+};
 </script>
 
 <style scoped lang="scss">

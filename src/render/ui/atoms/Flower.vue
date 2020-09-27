@@ -8,16 +8,11 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-
-@Options({
+export default {
   props: {
     position: String
   }
-})
-export default class Flower extends Vue {
-  position!: "top-right" | "bottom-left";
-}
+};
 </script>
 
 <style scoped lang="scss">

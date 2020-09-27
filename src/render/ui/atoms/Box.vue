@@ -5,16 +5,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from "vue-class-component";
-
-@Options({
+export default {
   props: {
     secondary: Boolean
   }
-})
-export default class Box extends Vue {
-  secondary?: boolean = false;
-}
+};
 </script>
 
 <style scoped lang="scss">

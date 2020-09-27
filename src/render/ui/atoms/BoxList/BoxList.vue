@@ -4,13 +4,6 @@
   </ul>
 </template>
 
-<script lang="ts">
-import { Options, Vue } from "vue-class-component";
-
-@Options({})
-export default class BoxList extends Vue {}
-</script>
-
 <style scoped>
 .box-list {
   padding: 0;

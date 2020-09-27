@@ -63,7 +63,6 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
 import Box from "@/render/ui/atoms/Box.vue";
 import Flower from "@/render/ui/atoms/Flower.vue";
 import Logo from "@/render/ui/atoms/Logo.vue";
@@ -71,7 +70,7 @@ import BoxList from "@/render/ui/atoms/BoxList/BoxList.vue";
 import BoxListItem from "@/render/ui/atoms/BoxList/BoxListItem.vue";
 import BoxSpaceText from "@/render/app/BoxSpaceText.vue";
 
-@Options({
+export default {
   components: {
     Box,
     Flower,
@@ -80,8 +79,7 @@ import BoxSpaceText from "@/render/app/BoxSpaceText.vue";
     BoxListItem,
     BoxSpaceText
   }
-})
-export default class Journal extends Vue {}
+};
 </script>
 
 <style scoped lang="scss">

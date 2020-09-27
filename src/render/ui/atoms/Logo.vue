@@ -7,13 +7,6 @@
   />
 </template>
 
-<script lang="ts">
-import { Options, Vue } from "vue-class-component";
-
-@Options({})
-export default class Logo extends Vue {}
-</script>
-
 <style scoped>
 .logo {
   height: 100px;

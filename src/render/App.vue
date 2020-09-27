@@ -3,15 +3,18 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
+import { appProvider } from "@/render/providers/appProvider";
 import Journal from "@/render/views/Journal.vue";
 
-@Options({
+export default {
+  name: "App",
   components: {
     Journal
+  },
+  setup() {
+    appProvider();
   }
-})
-export default class App extends Vue {}
+};
 </script>
 
 <style>
