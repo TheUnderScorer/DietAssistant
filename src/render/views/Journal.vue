@@ -1,83 +1,36 @@
 <template>
-  <div class="wrapper">
-    <Flower position="top-right" />
-    <main class="main">
-      <Logo />
-      <hr class="separator" />
-      <h1 class="title">
-        Dzienniczek żywieniowy
-      </h1>
-      <Box>
-        <BoxList>
-          <BoxListItem title="Imię nazwisko">
-            Paulina Grzanek
-          </BoxListItem>
-          <BoxListItem title="Wiek">
-            21
-          </BoxListItem>
-          <BoxListItem title="Cel wizyty">
-            odchudzanie, dieta pcos
-          </BoxListItem>
-        </BoxList>
-      </Box>
-      <BoxSpaceText />
-      <Box secondary>
-        <BoxList>
-          <BoxListItem withInput labelFor="weekDay" title="Dzień tygodnia">
-            <input type="text" id="weekDay" />
-          </BoxListItem>
-          <BoxListItem withInput labelFor="date" title="Data">
-            <input type="date" id="date" />
-          </BoxListItem>
-          <BoxListItem valueClassName="row">
-            <BoxListItem
-              wrapperComponent="div"
-              class="col-sm-6"
-              title="Pobudka"
-              withInput
-              labelFor="wakeTime"
-            >
-              <input type="time" id="wakeTime" />
-            </BoxListItem>
-            <BoxListItem
-              wrapperComponent="div"
-              class="col-sm-6"
-              title="Sen"
-              withInput
-              labelFor="sleepTime"
-            >
-              <input type="time" id="sleepTime" />
-            </BoxListItem>
-          </BoxListItem>
-          <BoxListItem
-            title="Aktywność fizyczna w ciągu dnia"
-            withInput
-            labelFor="dayActivity"
-          >
-            <input type="text" id="dayActivity" />
-          </BoxListItem>
-        </BoxList>
-      </Box>
-    </main>
+  <div v-if="loading">
+    Loading...
   </div>
+  <JournalEntry
+    v-if="!loading"
+    @update="handleUpdate"
+    :value="journal.entries[0]"
+  />
 </template>
 
 <script lang="ts">
-import Box from "@/render/ui/atoms/Box.vue";
-import Flower from "@/render/ui/atoms/Flower.vue";
-import Logo from "@/render/ui/atoms/Logo.vue";
-import BoxList from "@/render/ui/atoms/BoxList/BoxList.vue";
-import BoxListItem from "@/render/ui/atoms/BoxList/BoxListItem.vue";
-import BoxSpaceText from "@/render/app/BoxSpaceText.vue";
+import { useJournal } from "@/render/app/journal/useJournal";
+import JournalEntry from "@/render/app/journal/JournalEntry.vue";
+import { JournalEntry as JournalEntryType } from "@/shared/features/journal/types";
 
 export default {
-  components: {
-    Box,
-    Flower,
-    Logo,
-    BoxList,
-    BoxListItem,
-    BoxSpaceText
+  components: { JournalEntry },
+  setup() {
+    const { journal, loading } = useJournal();
+
+    const handleUpdate = <Key extends keyof JournalEntryType>(
+      key: Key,
+      value: JournalEntryType[Key]
+    ) => {
+      journal.entries[0][key] = value;
+    };
+
+    return {
+      journal,
+      handleUpdate,
+      loading
+    };
   }
 };
 </script>
