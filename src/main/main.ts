@@ -11,7 +11,7 @@ const context: AppContext = {
   ipcService: new IpcMainService()
 };
 
-context.ipcService.receive("test", (event, args) => {
+context.ipcService.handle("test", (event, args) => {
   console.log({ event, args });
 
   return true;

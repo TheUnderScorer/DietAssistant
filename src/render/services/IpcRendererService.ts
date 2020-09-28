@@ -3,11 +3,11 @@ import { IpcRenderer } from "electron";
 export class IpcRendererService {
   constructor(private readonly ipc: IpcRenderer = window.ipcRenderer) {}
 
-  async send<Arg extends object = object, ReturnValue = any>(
-    name: string,
-    arg?: Arg
-  ): Promise<ReturnValue> {
-    const result = this.ipc.sendSync(name, arg);
+  async invoke<
+    Arg extends object = object,
+    ReturnValue extends Record<string, any> = Record<string, any>
+  >(name: string, arg?: Arg): Promise<ReturnValue> {
+    const result = await this.ipc.invoke(name, arg);
 
     if (result.error) {
       throw new Error(result.error.message);
