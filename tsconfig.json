@@ -37,7 +37,6 @@
     "tests/**/*.tsx"
   ],
   "exclude": [
-    "node_modules",
-    "src/main/**"
+    "node_modules"
   ]
 }

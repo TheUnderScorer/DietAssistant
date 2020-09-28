@@ -29,7 +29,7 @@ export default {
   setup() {
     const { isExporting, container } = useJournalExport();
 
-    const ignoreElements = (el: HTMLElement) =>
+    const ignoreElements = (el: Element) =>
       el.classList.contains("ignore-export");
 
     const wait = () => new Promise(resolve => setTimeout(resolve, 1000));
