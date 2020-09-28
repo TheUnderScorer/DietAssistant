@@ -1,7 +1,10 @@
 <template>
   <div>
-    <button class="ignore-export" @click="exportAsPdf">
+    <button :disabled="isExporting" class="ignore-export" @click="exportAsImg">
       Export as screenshot
+    </button>
+    <button :disabled="isExporting" class="ignore-export" @click="exportAsPdf">
+      Export as pdf
     </button>
   </div>
 </template>
@@ -10,38 +13,75 @@
 import { Journal } from "@/shared/features/journal/types";
 import html2canvas from "html2canvas";
 import download from "downloadjs";
+import jsPdf from "jspdf";
+import { useJournalExport } from "@/render/app/journal/useJournalExport";
 
 interface ExportJournalProps {
   journal: Journal;
   activeIndex: number;
-  containerRef?: HTMLElement;
 }
 
 export default {
   props: {
     journal: Object,
-    activeIndex: Number,
-    containerRef: HTMLElement
+    activeIndex: Number
   },
-  setup(props: ExportJournalProps) {
+  setup() {
+    const { isExporting, container } = useJournalExport();
+
+    const ignoreElements = (el: HTMLElement) =>
+      el.classList.contains("ignore-export");
+
+    const wait = () => new Promise(resolve => setTimeout(resolve, 1000));
+
     const exportAsPdf = async () => {
-      if (!props.containerRef) {
+      if (!container) {
         return;
       }
 
-      const canvas = await html2canvas(document.body, {
-        ignoreElements: el => el.classList.contains("ignore-export"),
-        allowTaint: true,
-        useCORS: true
+      isExporting.value = true;
+
+      await wait();
+
+      const pdf = new jsPdf("l", "px", [window.outerWidth, window.outerHeight]);
+
+      await pdf.html(container, {
+        html2canvas: {
+          ignoreElements
+        },
+        x: 15,
+        y: 15
+      });
+
+      isExporting.value = false;
+
+      await pdf.save("dzienniczek.pdf");
+    };
+
+    const exportAsImg = async () => {
+      if (!container) {
+        return;
+      }
+
+      isExporting.value = true;
+
+      await wait();
+
+      const canvas = await html2canvas(container, {
+        ignoreElements
       });
 
       const data = canvas.toDataURL();
+
+      isExporting.value = false;
 
       download(data, "dzienniczek.png");
     };
 
     return {
-      exportAsPdf
+      exportAsImg,
+      exportAsPdf,
+      isExporting
     };
   }
 };

@@ -32,35 +32,27 @@
           </td>
           <td>
             <Textarea
-              class="editable"
               :value="item.foodOrDrink"
-              v-resizable
-              @input="handleChange(index, 'foodOrDrink', $event)"
+              @update="handleChange(index, 'foodOrDrink', $event)"
             >
             </Textarea>
           </td>
           <td>
             <Textarea
-              v-resizable
               :value="item.products"
-              class="editable"
-              @input="handleChange(index, 'products', $event)"
+              @update="handleChange(index, 'products', $event)"
             ></Textarea>
           </td>
           <td>
             <Textarea
-              v-resizable
               :value="item.units"
-              class="editable"
-              @input="handleChange(index, 'units', $event)"
+              @update="handleChange(index, 'units', $event)"
             ></Textarea>
           </td>
           <td>
             <Textarea
-              v-resizable
               :value="item.place"
-              class="editable"
-              @input="handleChange(index, 'place', $event)"
+              @update="handleChange(index, 'place', $event)"
             ></Textarea>
           </td>
         </tr>

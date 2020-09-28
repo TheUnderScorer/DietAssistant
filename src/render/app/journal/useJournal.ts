@@ -51,14 +51,13 @@ const createJournalEntry = (prevEntry?: JournalEntry): JournalEntry => {
   };
 };
 
+const activeIndex = ref(0);
+const loading = ref(true);
+const journal = reactive<Journal>({
+  entries: [createJournalEntry()]
+});
+
 export const useJournal = () => {
-  const activeIndex = ref(0);
-  const loading = ref(true);
-
-  const journal = reactive<Journal>({
-    entries: [createJournalEntry()]
-  });
-
   const addEntry = () => {
     const lastEntry = journal.entries[journal.entries.length - 1];
 

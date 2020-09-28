@@ -1,12 +1,18 @@
 import { Directive } from "vue";
 
+const resize = (el: HTMLElement) => {
+  el.style.height = "auto";
+  el.style.height = `${el.scrollHeight}px`;
+};
+
 export const resizable: Directive<HTMLElement> = {
-  created(el) {
+  mounted(el) {
+    resize(el);
+
     el.addEventListener("input", e => {
       const target = e.target as HTMLElement;
 
-      target.style.height = "auto";
-      target.style.height = `${target.scrollHeight}px`;
+      resize(target);
     });
   }
 };

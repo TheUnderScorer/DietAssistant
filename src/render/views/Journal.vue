@@ -1,5 +1,5 @@
 <template>
-  <div :ref="setContainerRef" class="journal-container">
+  <div class="journal-container">
     <div v-if="loading">
       Loading...
     </div>
@@ -9,11 +9,7 @@
         :value="journal.entries[activeIndex]"
       />
       <div class="export-container">
-        <ExportJournal
-          :container-ref="containerRef"
-          :active-index="activeIndex"
-          :entries="journal"
-        />
+        <ExportJournal :active-index="activeIndex" :entries="journal" />
       </div>
     </div>
   </div>
@@ -24,13 +20,10 @@ import { useJournal } from "@/render/app/journal/useJournal";
 import JournalEntry from "@/render/app/journal/JournalEntry.vue";
 import { JournalEntry as JournalEntryType } from "@/shared/features/journal/types";
 import ExportJournal from "@/render/app/journal/ExportJournal.vue";
-import { useRef } from "@/render/hooks/useRef";
 
 export default {
   components: { ExportJournal, JournalEntry },
   setup() {
-    const [containerRef, setContainerRef] = useRef<HTMLElement>();
-
     const { journal, loading, activeIndex } = useJournal();
 
     const handleUpdate = <Key extends keyof JournalEntryType>(
@@ -44,9 +37,7 @@ export default {
       journal,
       handleUpdate,
       loading,
-      activeIndex,
-      containerRef,
-      setContainerRef
+      activeIndex
     };
   }
 };
