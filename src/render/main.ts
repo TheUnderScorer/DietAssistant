@@ -3,6 +3,8 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
 import { IpcRendererService } from "@/render/services/IpcRendererService";
+import { resizable } from "@/render/directives/resizable";
+import { notSelectable } from "@/render/directives/notSelectable";
 
 createApp(App)
   .use(router)
@@ -13,4 +15,6 @@ createApp(App)
       }
     });
   })
+  .directive("resizable", resizable)
+  .directive("not-selectable", notSelectable)
   .mount("#app");

@@ -62,8 +62,8 @@
               labelFor="sleepTime"
             >
               <input
-                @input="handleChange('time', $event)"
-                :value="value.time"
+                @input="handleChange('sleepTime', $event)"
+                :value="value.sleepTime"
                 type="time"
                 id="sleepTime"
               />
@@ -83,6 +83,7 @@
           </BoxListItem>
         </BoxList>
       </Box>
+      <FoodEntriesTable @update="handleFoodsUpdate" :value="value.foods" />
     </main>
   </div>
 </template>
@@ -91,18 +92,20 @@
 import Box from "@/render/ui/atoms/Box.vue";
 import Flower from "@/render/ui/atoms/Flower.vue";
 import Logo from "@/render/ui/atoms/Logo.vue";
-import BoxList from "@/render/ui/atoms/BoxList/BoxList.vue";
-import BoxListItem from "@/render/ui/atoms/BoxList/BoxListItem.vue";
+import BoxList from "@/render/ui/atoms/BoxList.vue";
+import BoxListItem from "@/render/ui/molecules/BoxListItem.vue";
 import BoxSpaceText from "@/render/app/components/BoxSpaceText.vue";
 import { JournalEntry } from "@/shared/features/journal/types";
 import { SetupContext } from "vue";
+import FoodEntriesTable from "@/render/app/journal/FoodEntriesTable.vue";
 
 interface JournalEntryProps {
-  modelValue: JournalEntry;
+  value: JournalEntry;
 }
 
 export default {
   components: {
+    FoodEntriesTable,
     Box,
     Flower,
     Logo,
@@ -121,8 +124,16 @@ export default {
       emit("update", key, value);
     };
 
+    const handleFoodsUpdate = (row: number, key: string, value: string) => {
+      const newValue = [...props.value.foods];
+      (newValue[row] as Record<string, string>)[key] = value;
+
+      emit("update", "foods", newValue);
+    };
+
     return {
-      handleChange
+      handleChange,
+      handleFoodsUpdate
     };
   }
 };

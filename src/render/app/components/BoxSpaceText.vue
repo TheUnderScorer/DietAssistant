@@ -1,5 +1,5 @@
 <template>
-  <div class="box-space">
+  <div v-not-selectable class="box-space">
     <span>
       Dzienniczek jest narzędziem pozwalającym na ocenę dotychczasowego sposobu
       żywienia i wskazanie ewentualnych błędów żywnieniowych.

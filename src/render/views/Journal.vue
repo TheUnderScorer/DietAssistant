@@ -1,23 +1,37 @@
 <template>
-  <div v-if="loading">
-    Loading...
+  <div :ref="setContainerRef" class="journal-container">
+    <div v-if="loading">
+      Loading...
+    </div>
+    <div v-if="!loading">
+      <JournalEntry
+        @update="handleUpdate"
+        :value="journal.entries[activeIndex]"
+      />
+      <div class="export-container">
+        <ExportJournal
+          :container-ref="containerRef"
+          :active-index="activeIndex"
+          :entries="journal"
+        />
+      </div>
+    </div>
   </div>
-  <JournalEntry
-    v-if="!loading"
-    @update="handleUpdate"
-    :value="journal.entries[0]"
-  />
 </template>
 
 <script lang="ts">
 import { useJournal } from "@/render/app/journal/useJournal";
 import JournalEntry from "@/render/app/journal/JournalEntry.vue";
 import { JournalEntry as JournalEntryType } from "@/shared/features/journal/types";
+import ExportJournal from "@/render/app/journal/ExportJournal.vue";
+import { useRef } from "@/render/hooks/useRef";
 
 export default {
-  components: { JournalEntry },
+  components: { ExportJournal, JournalEntry },
   setup() {
-    const { journal, loading } = useJournal();
+    const [containerRef, setContainerRef] = useRef<HTMLElement>();
+
+    const { journal, loading, activeIndex } = useJournal();
 
     const handleUpdate = <Key extends keyof JournalEntryType>(
       key: Key,
@@ -29,15 +43,19 @@ export default {
     return {
       journal,
       handleUpdate,
-      loading
+      loading,
+      activeIndex,
+      containerRef,
+      setContainerRef
     };
   }
 };
 </script>
 
 <style scoped lang="scss">
-body {
-  font-family: "Raleway", sans-serif;
+.journal-container {
+  overflow: auto;
+  height: 100%;
 }
 
 .wrapper {
@@ -71,5 +89,9 @@ hr.separator {
   font-family: "Playfair Display", serif;
   letter-spacing: 9px;
   margin-bottom: 20px;
+}
+
+.export-container {
+  margin-top: 15px;
 }
 </style>

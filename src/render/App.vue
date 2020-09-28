@@ -18,6 +18,16 @@ export default {
 </script>
 
 <style>
+body {
+  font-family: "Raleway", sans-serif;
+}
+
+body,
+html,
+#app {
+  overflow: visible;
+}
+
 .img-fluid {
   max-width: 100%;
   height: auto;
@@ -32,5 +42,9 @@ textarea {
   border: none;
   background: transparent;
   width: 100%;
+}
+
+.not-selectable {
+  user-select: none;
 }
 </style>
