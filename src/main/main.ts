@@ -1,6 +1,7 @@
 import { app, BrowserWindow } from "electron";
 import isDev from "electron-is-dev";
-import * as path from "path";
+import path from "path";
+import url from "url";
 import { AppContext } from "@/main/context";
 import { IpcMainService } from "./services/IpcMainService";
 
@@ -11,26 +12,31 @@ const context: AppContext = {
   ipcService: new IpcMainService()
 };
 
-context.ipcService.handle("test", (event, args) => {
-  console.log({ event, args });
-
-  return true;
-});
-
 const createWindow = async () => {
+  const preload = path.join(__dirname, "preload.js");
+
+  console.log(`Using ${preload} as preload script.`);
+
   mainWindow = new BrowserWindow({
     height: 600,
     width: 800,
     title: "Diet assistant",
     webPreferences: {
-      preload: path.join(app.getAppPath(), "preload.js")
+      preload,
+      nodeIntegration: false
     }
   });
 
   // Either use vue server when on dev, or production build otherwise.
   const startUrl = isDev
     ? "http://localhost:8080"
-    : `file::${path.join(__dirname, "../build/index.html")}`;
+    : url.format({
+        pathname: path.join(__dirname, "index.html"),
+        protocol: "file:",
+        slashes: true
+      });
+
+  console.log(`Using ${startUrl} as renderer url.`);
 
   await mainWindow.loadURL(startUrl);
 
@@ -47,12 +53,12 @@ const createWindow = async () => {
   });
 };
 
-app.on("ready", () => {
-  createWindow();
+app.on("ready", async () => {
+  await createWindow();
 
-  app.on("activate", () => {
+  app.on("activate", async () => {
     if (!BrowserWindow.getAllWindows().length) {
-      createWindow();
+      await createWindow();
     }
   });
 });

@@ -3,7 +3,7 @@ const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
-  mode: "development",
+  mode: process.env.NODE_ENV === "production" ? "production" : "development",
   entry: {
     main: "./src/main/main.ts",
     preload: "./src/main/preload.js"
@@ -11,6 +11,10 @@ module.exports = {
   target: "electron-main",
   devtool: "inline-source-map",
   externals: [nodeExternals()],
+  node: {
+    __dirname: false,
+    __filename: false
+  },
   module: {
     rules: [
       {
@@ -35,6 +39,6 @@ module.exports = {
   },
   output: {
     filename: "[name].js",
-    path: path.resolve(__dirname, "build-electron")
+    path: path.resolve(__dirname, "build")
   }
 };
