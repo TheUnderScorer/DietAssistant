@@ -1,11 +1,18 @@
-import { reactive, ref } from "vue";
-import { Journal, JournalEntry } from "@/shared/features/journal/types";
+import { inject, reactive, ref, toRaw, watch } from "vue";
+import {
+  Journal,
+  JournalEntry,
+  JournalEvents
+} from "@/shared/features/journal/types";
 import { add, format } from "date-fns";
 import { pl } from "date-fns/locale";
+import debounce from "lodash.debounce";
+import { ipcRendererProviderSymbol } from "@/render/providers/ipcRendrerProvider";
+import { IpcRendererService } from "@/render/services/IpcRendererService";
 
 const createJournalEntry = (prevEntry?: JournalEntry): JournalEntry => {
-  const now = prevEntry?.createdAt
-    ? add(new Date(prevEntry.createdAt), { days: 1 })
+  const now = prevEntry?.date
+    ? add(new Date(prevEntry.date), { days: 1 })
     : new Date();
 
   return {
@@ -51,6 +58,7 @@ const createJournalEntry = (prevEntry?: JournalEntry): JournalEntry => {
   };
 };
 
+const didInitialFetch = ref(false);
 const activeIndex = ref(0);
 const loading = ref(true);
 const journal = reactive<Journal>({
@@ -58,11 +66,34 @@ const journal = reactive<Journal>({
 });
 
 export const useJournal = () => {
-  const addEntry = () => {
+  const ipcService = inject<IpcRendererService>(ipcRendererProviderSymbol)!;
+
+  const addEntry = (setAsActive = true) => {
     const lastEntry = journal.entries[journal.entries.length - 1];
 
-    journal.entries.push(createJournalEntry(lastEntry));
+    const index = journal.entries.push(createJournalEntry(lastEntry)) - 1;
+
+    if (setAsActive) {
+      activeIndex.value = index;
+    }
+
+    return index;
   };
+
+  watch(
+    journal,
+    debounce(async () => {
+      const rawJournal: Journal = {
+        ...toRaw(journal),
+        entries: journal.entries.map(entry => ({
+          ...toRaw(entry),
+          foods: entry.foods.map(food => toRaw(food))
+        }))
+      };
+
+      await ipcService.invoke(JournalEvents.JournalUpdated, rawJournal);
+    }, 1000)
+  );
 
   setTimeout(() => {
     loading.value = false;
@@ -72,6 +103,7 @@ export const useJournal = () => {
     journal,
     loading,
     activeIndex,
-    addEntry
+    addEntry,
+    didInitialFetch
   };
 };

@@ -20,3 +20,7 @@ export interface FoodEntry {
 export interface Journal {
   entries: JournalEntry[];
 }
+
+export enum JournalEvents {
+  JournalUpdated = "JournalUpdated"
+}

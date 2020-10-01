@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { appProvider } from "@/render/providers/appProvider";
-import Journal from "@/render/views/Journal.vue";
+import Journal from "@/render/app/journal/Journal.vue";
 
 export default {
   name: "App",

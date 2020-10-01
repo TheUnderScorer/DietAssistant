@@ -3,9 +3,6 @@
     <button :disabled="isExporting" class="ignore-export" @click="exportAsImg">
       Export as screenshot
     </button>
-    <button :disabled="isExporting" class="ignore-export" @click="exportAsPdf">
-      Export as pdf
-    </button>
   </div>
 </template>
 
