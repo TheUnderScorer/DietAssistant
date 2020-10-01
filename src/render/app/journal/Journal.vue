@@ -55,7 +55,7 @@ export default {
       key: Key,
       value: JournalEntryType[Key]
     ) => {
-      journal.entries[0][key] = value;
+      journal.entries[activeIndex.value][key] = value;
     };
 
     const handlePagination = (action: "prev" | "next") => {

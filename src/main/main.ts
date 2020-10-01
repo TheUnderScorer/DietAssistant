@@ -4,13 +4,18 @@ import path from "path";
 import url from "url";
 import { AppContext } from "@/main/context";
 import { IpcMainService } from "./services/IpcMainService";
+import { createJournalHandlers } from "@/main/features/journal/handlers";
+import Store from "electron-store";
 
 let mainWindow: BrowserWindow | null;
 
 const context: AppContext = {
   getAppWindow: () => mainWindow,
-  ipcService: new IpcMainService()
+  ipcService: new IpcMainService(),
+  store: new Store()
 };
+
+createJournalHandlers(context);
 
 const createWindow = async () => {
   const preload = path.join(__dirname, "preload.js");

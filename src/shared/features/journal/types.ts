@@ -22,5 +22,6 @@ export interface Journal {
 }
 
 export enum JournalEvents {
-  JournalUpdated = "JournalUpdated"
+  SaveJournal = "SaveJournal",
+  GetJournal = "GetJournal"
 }

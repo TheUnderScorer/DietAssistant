@@ -1,4 +1,4 @@
-import { inject, reactive, ref, toRaw, watch } from "vue";
+import { inject, reactive, ref, toRaw, watch, toRefs } from "vue";
 import {
   Journal,
   JournalEntry,
@@ -68,10 +68,26 @@ const journal = reactive<Journal>({
 export const useJournal = () => {
   const ipcService = inject<IpcRendererService>(ipcRendererProviderSymbol)!;
 
+  if (!didInitialFetch.value) {
+    didInitialFetch.value = true;
+
+    ipcService
+      .invoke<never, Journal | null>(JournalEvents.GetJournal)
+      .then(result => {
+        if (!result) {
+          return;
+        }
+
+        Object.assign(journal, reactive(result));
+      })
+      .catch(console.error);
+  }
+
   const addEntry = (setAsActive = true) => {
     const lastEntry = journal.entries[journal.entries.length - 1];
 
-    const index = journal.entries.push(createJournalEntry(lastEntry)) - 1;
+    const newEntry = createJournalEntry(lastEntry);
+    const index = journal.entries.push(newEntry) - 1;
 
     if (setAsActive) {
       activeIndex.value = index;
@@ -91,7 +107,7 @@ export const useJournal = () => {
         }))
       };
 
-      await ipcService.invoke(JournalEvents.JournalUpdated, rawJournal);
+      await ipcService.invoke(JournalEvents.SaveJournal, rawJournal);
     }, 1000)
   );
 
