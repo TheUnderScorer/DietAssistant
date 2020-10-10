@@ -1,6 +1,6 @@
 {
   "name": "diet-assistant",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "main": "build/main.js",
   "scripts": {
@@ -14,7 +14,7 @@
     "build-windows": "electron-builder -w",
     "build-macos": "electron-builder -m",
     "postinstall": "electron-builder install-app-deps",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release --no-ci"
   },
   "build": {
     "productName": "Diet Assistant",
@@ -62,7 +62,7 @@
       [
         "@semantic-release/exec",
         {
-          "prepareCmd": "echo ${nextRelease.version} > file.txt"
+          "prepareCmd": "echo ${nextRelease.version} > test.txt"
         }
       ],
       [
