@@ -1,0 +1,51 @@
+name: CI
+on: [push]
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install npm dependencies
+        run: |
+          npm ci
+      - name: Lint
+        run: |
+          npm run lint
+
+  release:
+    needs:
+      - test
+    name: Build & Release
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure CI Git User
+        run: |
+          git config --global user.name 'TheUnderScorer'
+          git config --global user.email 'przemyslawzydek@gmail.com'
+          git remote set-url origin https://TheUnderScorer:$GITHUB_TOKEN@github.com/TheUnderScorer/DietAssistant
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install npm dependencies
+        run: |
+          npm ci
+      - name: Build main & renderer
+        run: |
+          npm run build-renderer & npm run build-electron
+      - name: Build Windows
+        run: |
+          npm run build-windows
+      - name: Upload Artifact
+        id: upload_artifact_windows
+        uses: actions/upload-artifact@v1
+        with:
+          name: diet_assistant.exe
+          path: electron/output/diet_assistant.exe
+      - name: Semantic Release
+        run: |
+          npm run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
