@@ -18,9 +18,11 @@ const context: AppContext = {
 createJournalHandlers(context);
 
 const createWindow = async () => {
-  const menu = Menu.buildFromTemplate([]);
+  if (!isDev) {
+    const menu = Menu.buildFromTemplate([]);
 
-  Menu.setApplicationMenu(menu);
+    Menu.setApplicationMenu(menu);
+  }
 
   const preload = path.join(__dirname, "preload.js");
 

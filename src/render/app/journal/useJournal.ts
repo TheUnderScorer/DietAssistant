@@ -74,7 +74,7 @@ export const useJournal = () => {
     ipcService
       .invoke<never, Journal | null>(JournalEvents.GetJournal)
       .then(result => {
-        if (!result) {
+        if (!result?.entries?.length) {
           return;
         }
 
@@ -94,6 +94,16 @@ export const useJournal = () => {
     }
 
     return index;
+  };
+
+  const removeEntries = async () => {
+    if (!window.confirm("Are you sure you want to remove all entries?")) {
+      return;
+    }
+
+    await ipcService.invoke(JournalEvents.ClearJournal);
+
+    journal.entries = [];
   };
 
   watch(
@@ -120,6 +130,7 @@ export const useJournal = () => {
     loading,
     activeIndex,
     addEntry,
-    didInitialFetch
+    didInitialFetch,
+    removeEntries
   };
 };

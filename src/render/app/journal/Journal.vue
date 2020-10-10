@@ -24,6 +24,9 @@
           <button @click="addEntry">
             Add new entry
           </button>
+          <button @click="removeEntries">
+            Remove all entries
+          </button>
         </div>
         <button
           @click="handlePagination('next')"
@@ -47,7 +50,13 @@ import { computed } from "vue";
 export default {
   components: { ExportJournal, JournalEntry },
   setup() {
-    const { journal, loading, activeIndex, addEntry } = useJournal();
+    const {
+      journal,
+      loading,
+      activeIndex,
+      addEntry,
+      removeEntries
+    } = useJournal();
 
     const showPagination = computed(() => journal.entries.length > 1);
 
@@ -75,7 +84,8 @@ export default {
       activeIndex,
       addEntry,
       handlePagination,
-      showPagination
+      showPagination,
+      removeEntries
     };
   }
 };

@@ -2,7 +2,7 @@ name: Release
 on:
   push:
     branches:
-      - '\d+.\d+.\d+'
+      - master
 jobs:
   release:
     name: Build & Release

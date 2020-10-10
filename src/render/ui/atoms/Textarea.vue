@@ -1,13 +1,5 @@
 <template>
-  <textarea
-    v-resizable
-    v-if="!isExporting"
-    :value="value"
-    @input="$emit('update', $event)"
-    class="textarea-component"
-  ></textarea>
   <div
-    v-if="isExporting"
     contenteditable="true"
     v-html="getContentEditableValue"
     @input="$emit('update', $event)"
@@ -32,7 +24,7 @@ export default {
     const { isExporting } = useJournalExport();
 
     const getContentEditableValue = computed(() => {
-      return props.value.replace(/\n/g, "<br>");
+      return props.value?.replace(/\n/g, "<br>") ?? "";
     });
 
     return {
