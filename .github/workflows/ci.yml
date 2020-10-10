@@ -30,7 +30,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Install npm dependencies
         run: |
-          npm ci & electron-builder install-app-deps
+          sudo apt-get install --no-install-recommends -y libopenjp2-tools & npm ci & npm run postinstall
       - name: Build main & renderer
         run: |
           npm run build-renderer & npm run build-electron
