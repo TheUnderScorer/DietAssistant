@@ -1,25 +1,14 @@
-name: CI
-on: [push]
+name: Release
+on:
+  push:
+    tags:
+      - '\d+.\d+.\d+'
 jobs:
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install npm dependencies
-        run: |
-          npm ci
-
-      - name: Lint
-        run: |
-          npm run lint
-
   release:
-    needs:
-      - test
     name: Build & Release
     runs-on: macos-latest
     if: github.ref == 'refs/heads/master'
+
     steps:
       - uses: actions/checkout@v2
       - name: Configure CI Git User

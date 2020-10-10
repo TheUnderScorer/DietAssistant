@@ -13,7 +13,8 @@
     "serve-electron": "electron ./build/main.js",
     "build-windows": "electron-builder -w",
     "build-macos": "electron-builder -m",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps",
+    "semantic-release": "semantic-release"
   },
   "build": {
     "productName": "Diet Assistant",
@@ -118,6 +119,7 @@
     "prettier": "^1.19.1",
     "sass": "^1.26.11",
     "sass-loader": "^10.0.2",
+    "semantic-release": "17.1.2",
     "ts-loader": "^8.0.4",
     "tsconfig-paths-webpack-plugin": "^3.3.0",
     "typescript": "~3.9.3",
