@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, Menu } from "electron";
 import isDev from "electron-is-dev";
 import path from "path";
 import url from "url";
@@ -18,6 +18,10 @@ const context: AppContext = {
 createJournalHandlers(context);
 
 const createWindow = async () => {
+  const menu = Menu.buildFromTemplate([]);
+
+  Menu.setApplicationMenu(menu);
+
   const preload = path.join(__dirname, "preload.js");
 
   console.log(`Using ${preload} as preload script.`);
@@ -26,6 +30,7 @@ const createWindow = async () => {
     height: 600,
     width: 800,
     title: "Diet assistant",
+    titleBarStyle: "default",
     webPreferences: {
       preload,
       nodeIntegration: false
