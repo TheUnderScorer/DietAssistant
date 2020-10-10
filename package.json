@@ -62,7 +62,7 @@
       [
         "@semantic-release/exec",
         {
-          "prepareCmd": "echo ${nextRelease.version} > test.txt"
+          "prepareCmd": "echo APP_VERSION=\"${nextRelease.version}\" > electron-builder.env"
         }
       ],
       [
