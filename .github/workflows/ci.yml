@@ -9,6 +9,7 @@ jobs:
       - name: Install npm dependencies
         run: |
           npm ci
+
       - name: Lint
         run: |
           npm run lint
@@ -17,7 +18,7 @@ jobs:
     needs:
       - test
     name: Build & Release
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
@@ -28,24 +29,35 @@ jobs:
           git remote set-url origin https://TheUnderScorer:$GITHUB_TOKEN@github.com/TheUnderScorer/DietAssistant
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+
       - name: Install npm dependencies
         run: |
-          sudo apt-get install --no-install-recommends -y libopenjp2-tools & npm ci & npm run postinstall
+          npm install & npm run postinstall
+
       - name: Build main & renderer
         run: |
           npm run build-renderer & npm run build-electron
+
       - name: Build Windows
         run: |
           npm run build-windows
+
       - name: Upload Artifact
         id: upload_artifact_windows
         uses: actions/upload-artifact@v1
         with:
           name: diet_assistant.exe
           path: electron/output/diet_assistant.exe
+
       - name: Semantic Release
         run: |
           npm run semantic-release
+
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
