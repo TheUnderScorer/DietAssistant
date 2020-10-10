@@ -36,9 +36,6 @@
     }
   },
   "release": {
-    "branches": [
-      {"name": "v1.x.x", "range": "v1.x.x", "channel": "v1.x.x"}
-    ],
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
