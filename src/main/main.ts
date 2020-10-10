@@ -47,9 +47,11 @@ const createWindow = async () => {
 
   if (isDev) {
     mainWindow.webContents.once("dom-ready", () => {
-      mainWindow!.webContents.openDevTools({
-        mode: "right"
-      });
+      if (mainWindow) {
+        mainWindow.webContents.openDevTools({
+          mode: "right"
+        });
+      }
     });
   }
 
