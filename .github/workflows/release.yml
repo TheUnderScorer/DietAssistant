@@ -2,7 +2,7 @@ name: Release
 on:
   push:
     tags:
-      - '\d+.\d+.\d+'
+      - 'v\d+.\d+.\d+'
 jobs:
   release:
     name: Build & Release
