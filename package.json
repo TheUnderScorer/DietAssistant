@@ -62,7 +62,7 @@
       [
         "@semantic-release/exec",
         {
-          "prepareCmd": "echo APP_VERSION=\"${nextRelease.version}\" > electron-builder.env"
+          "prepareCmd": "echo APP_VERSION=\"${nextRelease.version}\" > electron-builder.env && npm run build-windows"
         }
       ],
       [
