@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/TheUnderScorer/DietAssistant/compare/v1.0.0...v1.1.0) (2020-10-10)
+
+
+### Features
+
+* Add app version ([7255b2a](https://github.com/TheUnderScorer/DietAssistant/commit/7255b2aa2eeb364ad24bc258d8f87425b4847e1d))
+
 # 1.0.0 (2020-10-10)
 
 
