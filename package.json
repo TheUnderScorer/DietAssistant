@@ -37,7 +37,7 @@
       "artifactName": "DietAssistant.exe"
     },
     "dmg": {
-      "artifactName": "DietAssitant.dmg"
+      "artifactName": "DietAssistant.dmg"
     },
     "directories": {
       "output": "electron/output"

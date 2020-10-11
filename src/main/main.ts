@@ -7,6 +7,7 @@ import { IpcMainService } from "./services/IpcMainService";
 import { createJournalHandlers } from "@/main/features/journal/handlers";
 import Store from "electron-store";
 import { createAboutHandlers } from "@/main/features/about/handlers";
+import { setupMenu } from "@/main/menu";
 
 let mainWindow: BrowserWindow | null;
 
@@ -20,12 +21,6 @@ createJournalHandlers(context);
 createAboutHandlers(context);
 
 const createWindow = async () => {
-  /*if (!isDev) {
-    const menu = Menu.buildFromTemplate([]);
-
-    Menu.setApplicationMenu(menu);
-  }*/
-
   const preload = path.join(__dirname, "preload.js");
 
   console.log(`Using ${preload} as preload script.`);
@@ -69,8 +64,9 @@ const createWindow = async () => {
   });
 };
 
-app.on("ready", async () => {
+app.whenReady().then(async () => {
   await createWindow();
+  setupMenu();
 
   app.on("activate", async () => {
     if (!BrowserWindow.getAllWindows().length) {
