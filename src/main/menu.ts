@@ -40,6 +40,7 @@ export const setupMenu = (context: AppContext) => {
           click: async () => {
             const { response } = await dialog.showMessageBox({
               buttons: ["Yes", "No"],
+              title: "Clear journal",
               message:
                 "Are you sure you want to clear your journal? It cannot be undone!"
             });
