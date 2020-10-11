@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu } from "electron";
+import { app, BrowserWindow } from "electron";
 import isDev from "electron-is-dev";
 import path from "path";
 import url from "url";
@@ -6,6 +6,7 @@ import { AppContext } from "@/main/context";
 import { IpcMainService } from "./services/IpcMainService";
 import { createJournalHandlers } from "@/main/features/journal/handlers";
 import Store from "electron-store";
+import { createAboutHandlers } from "@/main/features/about/handlers";
 
 let mainWindow: BrowserWindow | null;
 
@@ -16,13 +17,14 @@ const context: AppContext = {
 };
 
 createJournalHandlers(context);
+createAboutHandlers(context);
 
 const createWindow = async () => {
-  if (!isDev) {
+  /*if (!isDev) {
     const menu = Menu.buildFromTemplate([]);
 
     Menu.setApplicationMenu(menu);
-  }
+  }*/
 
   const preload = path.join(__dirname, "preload.js");
 
