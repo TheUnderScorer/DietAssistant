@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/TheUnderScorer/DietAssistant/compare/v1.2.0...v1.3.0) (2020-10-11)
+
+
+### Features
+
+* Cleanup app menu ([34af927](https://github.com/TheUnderScorer/DietAssistant/commit/34af927c6f2c3f4c0759bdc401a53d5512689b0a))
+
 # [1.2.0](https://github.com/TheUnderScorer/DietAssistant/compare/v1.1.0...v1.2.0) (2020-10-11)
 
 
