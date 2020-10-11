@@ -7,11 +7,14 @@
 </template>
 
 <script lang="ts">
-import { Journal } from "@/shared/features/journal/types";
+import { Journal, JournalEvents } from "@/shared/features/journal/types";
 import html2canvas from "html2canvas";
 import download from "downloadjs";
 import jsPdf from "jspdf";
 import { useJournalExport } from "@/render/app/journal/useJournalExport";
+import { ipcRendererProviderSymbol } from "@/render/providers/ipcRendrerProvider";
+import { inject } from "vue";
+import { IpcRendererService } from "@/render/services/IpcRendererService";
 
 interface ExportJournalProps {
   journal: Journal;
@@ -24,6 +27,8 @@ export default {
     activeIndex: Number
   },
   setup() {
+    const ipcService = inject<IpcRendererService>(ipcRendererProviderSymbol);
+
     const { isExporting, container } = useJournalExport();
 
     const ignoreElements = (el: Element) =>
@@ -74,6 +79,10 @@ export default {
 
       download(data, "dzienniczek.png");
     };
+
+    ipcService?.receive(JournalEvents.ExportRequested, async () => {
+      await exportAsImg();
+    });
 
     return {
       exportAsImg,

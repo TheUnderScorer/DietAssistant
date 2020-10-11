@@ -1,62 +1,10 @@
 import { inject, reactive, ref, toRaw, watch } from "vue";
-import {
-  Journal,
-  JournalEntry,
-  JournalEvents
-} from "@/shared/features/journal/types";
-import { add, format } from "date-fns";
-import { pl } from "date-fns/locale";
+import { Journal, JournalEvents } from "@/shared/features/journal/types";
 import debounce from "lodash.debounce";
 import { ipcRendererProviderSymbol } from "@/render/providers/ipcRendrerProvider";
 import { IpcRendererService } from "@/render/services/IpcRendererService";
-
-const createJournalEntry = (prevEntry?: JournalEntry): JournalEntry => {
-  const now = prevEntry?.date
-    ? add(new Date(prevEntry.date), { days: 1 })
-    : new Date();
-
-  return {
-    date: format(now, "yyyy-MM-dd"),
-    dayActivity: "",
-    sleepTime: "21:30",
-    wakeTime: "05:30",
-    weekDay: format(now, "eeee", {
-      locale: pl
-    }),
-    createdAt: new Date().toISOString(),
-    index: prevEntry?.index ? prevEntry.index + 1 : 0,
-    foods: [
-      {
-        hour: "06:30",
-        foodOrDrink: "Śniadanie",
-        place: "Dom",
-        products: "jak w przepisie na",
-        units: "jak w przepisie na"
-      },
-      {
-        hour: "10:30",
-        foodOrDrink: "II śniadanie",
-        place: "Dom",
-        products: "jak w przepisie na",
-        units: "jak w przepisie na"
-      },
-      {
-        hour: "14:30",
-        foodOrDrink: "Obiad",
-        place: "Dom",
-        products: "jak w przepisie na",
-        units: "jak w przepisie na"
-      },
-      {
-        hour: "18:30",
-        foodOrDrink: "Kolacja",
-        place: "Dom",
-        products: "jak w przepisie na",
-        units: "jak w przepisie na"
-      }
-    ]
-  };
-};
+import { createJournalEntry } from "@/shared/features/journal/createJournalEntry";
+import { addEntry as addJournalEntry } from "@/shared/features/journal/addEntry";
 
 const didInitialFetch = ref(false);
 const activeIndex = ref(0);
@@ -84,10 +32,7 @@ export const useJournal = () => {
   }
 
   const addEntry = (setAsActive = true) => {
-    const lastEntry = journal.entries[journal.entries.length - 1];
-
-    const newEntry = createJournalEntry(lastEntry);
-    const index = journal.entries.push(newEntry) - 1;
+    const index = addJournalEntry(journal);
 
     if (setAsActive) {
       activeIndex.value = index;
@@ -104,10 +49,16 @@ export const useJournal = () => {
     await ipcService.invoke(JournalEvents.ClearJournal);
 
     journal.entries = [createJournalEntry()];
+    activeIndex.value = 0;
   };
 
   ipcService.receive(JournalEvents.ClearJournalRequested, async () => {
     journal.entries = [createJournalEntry()];
+    activeIndex.value = 0;
+  });
+
+  ipcService.receive(JournalEvents.AddEntryRequested, () => {
+    addEntry(true);
   });
 
   watch(

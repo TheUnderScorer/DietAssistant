@@ -5,23 +5,26 @@ import Store from "electron-store";
 import { AppStore } from "@/shared/types/store";
 import { JournalService } from "@/main/features/journal/JournalService";
 
+export type AppWindowProvider = () => BrowserWindow | null;
+
 export interface AppContext {
   ipcService: IpcMainService;
-  getAppWindow: () => BrowserWindow | null;
+  getAppWindow: AppWindowProvider;
   store: ElectronStore<AppStore>;
   journalService: JournalService;
 }
 
 export const createContext = (
-  mainWindowProvider: () => BrowserWindow | null
+  mainWindowProvider: AppWindowProvider
 ): AppContext => {
   const store = new Store<AppStore>();
+  const ipcService = new IpcMainService();
 
-  const journalService = new JournalService(store);
+  const journalService = new JournalService(store, mainWindowProvider);
 
   return {
     getAppWindow: mainWindowProvider,
-    ipcService: new IpcMainService(),
+    ipcService,
     store,
     journalService
   };

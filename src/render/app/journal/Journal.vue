@@ -21,9 +21,6 @@
         </button>
         <div class="buttons">
           <ExportJournal :active-index="activeIndex" :entries="journal" />
-          <button @click="addEntry">
-            Add new entry
-          </button>
         </div>
         <button
           @click="handlePagination('next')"

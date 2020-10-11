@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div v-if="value" class="wrapper">
     <Flower position="top-right" />
     <main class="main">
       <Logo />

@@ -22,7 +22,21 @@ export const setupMenu = (context: AppContext) => {
       label: "Journal",
       submenu: [
         {
+          label: "Add entry",
+          click: () => {
+            context.journalService.addEntry();
+          },
+          accelerator: "CommandOrControl+N"
+        },
+        {
+          label: "Export as image",
+          click: () => {
+            context.journalService.export();
+          }
+        },
+        {
           label: "Remove all entries",
+          accelerator: "CommandOrControl+D",
           click: async () => {
             const { response } = await dialog.showMessageBox({
               buttons: ["Yes", "No"],
