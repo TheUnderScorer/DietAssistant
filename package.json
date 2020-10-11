@@ -11,7 +11,7 @@
     "build-electron": "NODE_ENV=\"production\" webpack --config webpack.electron.js",
     "watch-electron": "webpack --config webpack.electron.js -w",
     "serve-electron": "electron ./build/main.js",
-    "build-windows": "electron-builder -w",
+    "build-windows": "electron-builder -w --x64",
     "build-macos": "electron-builder -m",
     "postinstall": "electron-builder install-app-deps",
     "semantic-release": "semantic-release --no-ci"
@@ -21,7 +21,7 @@
     "appId": "pz.dietAssitant",
     "win": {
       "target": [
-        "portable"
+        "nsis"
       ]
     },
     "mac": {
@@ -33,12 +33,7 @@
       "build/",
       "package.json"
     ],
-    "portable": {
-      "artifactName": "DietAssistant.exe"
-    },
-    "dmg": {
-      "artifactName": "DietAssistant.dmg"
-    },
+    "artifactName": "DietAssistant.${ext}",
     "directories": {
       "output": "electron/output"
     }
@@ -70,7 +65,7 @@
       [
         "@semantic-release/exec",
         {
-          "prepareCmd": "electron-builder -m -w"
+          "prepareCmd": "electron-builder -m -w --x64"
         }
       ],
       [
