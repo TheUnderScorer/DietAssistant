@@ -1,3 +1,11 @@
+# [1.2.0](https://github.com/TheUnderScorer/DietAssistant/compare/v1.1.0...v1.2.0) (2020-10-11)
+
+
+### Features
+
+* Add app version to window object ([eadde2d](https://github.com/TheUnderScorer/DietAssistant/commit/eadde2dc607a5b955fd6fcf6f3be3a2454e147e2))
+* Display app version ([3ca14d4](https://github.com/TheUnderScorer/DietAssistant/commit/3ca14d40c8c349cdf44290f8842c3eec50f9aed8))
+
 # [1.1.0](https://github.com/TheUnderScorer/DietAssistant/compare/v1.0.0...v1.1.0) (2020-10-10)
 
 
