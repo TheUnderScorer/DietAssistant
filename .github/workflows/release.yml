@@ -31,20 +31,23 @@ jobs:
         run: |
           npm run build-renderer & npm run build-electron
 
-      - name: Build Windows
-        run: |
-          npm run build-windows
-
-      - name: Upload Artifact
-        id: upload_artifact_windows
-        uses: actions/upload-artifact@v1
-        with:
-          name: diet_assistant.exe
-          path: electron/output/diet_assistant.exe
-
-      - name: Semantic Release
+      - name: Build & Release
         run: |
           npm run semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Upload Artifact
+        id: upload_artifact_windows
+        uses: actions/upload-artifact@v1
+        with:
+          name: DietAssistant.exe
+          path: electron/output/DietAssistant.exe
+
+      - name: Upload Artifact
+        id: upload_artifact_mac
+        uses: actions/upload-artifact@v1
+        with:
+          name: DietAssistant.dmg
+          path: electron/output/DietAssistant.dmg

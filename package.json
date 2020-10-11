@@ -24,12 +24,20 @@
         "portable"
       ]
     },
+    "mac": {
+      "target": [
+        "dmg"
+      ]
+    },
     "files": [
       "build/",
       "package.json"
     ],
     "portable": {
-      "artifactName": "diet_assistant.exe"
+      "artifactName": "DietAssistant.exe"
+    },
+    "dmg": {
+      "artifactName": "DietAssitant.dmg"
     },
     "directories": {
       "output": "electron/output"
@@ -62,7 +70,7 @@
       [
         "@semantic-release/exec",
         {
-          "prepareCmd": "echo APP_VERSION=\"${nextRelease.version}\" > electron-builder.env && npm run build-windows"
+          "prepareCmd": "electron-builder -m -w"
         }
       ],
       [
@@ -80,8 +88,12 @@
         {
           "assets": [
             {
-              "path": "electron/output/diet_assistant.exe",
+              "path": "electron/output/DietAssistant.exe",
               "label": "Windows Build"
+            },
+            {
+              "path": "electron/output/DietAssistant.dmg",
+              "label": "Mac Build"
             }
           ]
         }
