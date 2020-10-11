@@ -1,20 +1,24 @@
 import { AppContext } from "@/main/context";
 import { Journal, JournalEvents } from "@/shared/features/journal/types";
 
-export const createJournalHandlers = ({ ipcService, store }: AppContext) => {
-  const key = "journal";
+export const createJournalHandlers = ({
+  ipcService,
+  journalService
+}: AppContext) => {
+  ipcService.handle<Journal>(
+    JournalEvents.SaveJournal,
+    async (event, journal) => {
+      await journalService.saveJournal(journal);
 
-  ipcService.handle<Journal>(JournalEvents.SaveJournal, (event, journal) => {
-    store.set(key, journal);
-
-    return true;
-  });
+      return true;
+    }
+  );
 
   ipcService.handle(JournalEvents.GetJournal, () => {
-    return store.get(key, null);
+    return journalService.getJournal();
   });
 
   ipcService.handle(JournalEvents.ClearJournal, async () => {
-    await store.delete(key);
+    await journalService.deleteJournal();
   });
 };

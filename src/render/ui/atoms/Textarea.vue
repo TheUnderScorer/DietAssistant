@@ -1,5 +1,13 @@
 <template>
+  <textarea
+    v-resizable
+    v-if="!isExporting"
+    :value="value"
+    @input="$emit('update', $event)"
+    class="textarea-component"
+  ></textarea>
   <div
+    v-if="isExporting"
     contenteditable="true"
     v-html="getContentEditableValue"
     @input="$emit('update', $event)"

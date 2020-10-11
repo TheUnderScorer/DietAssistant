@@ -15,4 +15,12 @@ export class IpcRendererService {
 
     return result;
   }
+
+  receive(name: string, listener: () => void) {
+    this.ipc.on(name, listener);
+
+    return () => {
+      this.ipc.off(name, listener);
+    };
+  }
 }

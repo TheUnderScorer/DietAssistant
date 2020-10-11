@@ -103,8 +103,12 @@ export const useJournal = () => {
 
     await ipcService.invoke(JournalEvents.ClearJournal);
 
-    journal.entries = [];
+    journal.entries = [createJournalEntry()];
   };
+
+  ipcService.receive(JournalEvents.ClearJournalRequested, async () => {
+    journal.entries = [createJournalEntry()];
+  });
 
   watch(
     journal,

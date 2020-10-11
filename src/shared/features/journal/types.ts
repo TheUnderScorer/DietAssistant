@@ -24,5 +24,6 @@ export interface Journal {
 export enum JournalEvents {
   SaveJournal = "SaveJournal",
   GetJournal = "GetJournal",
-  ClearJournal = "ClearJournal"
+  ClearJournal = "ClearJournal",
+  ClearJournalRequested = "ClearJournalRequested"
 }

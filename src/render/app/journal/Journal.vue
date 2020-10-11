@@ -24,9 +24,6 @@
           <button @click="addEntry">
             Add new entry
           </button>
-          <button @click="removeEntries">
-            Remove all entries
-          </button>
         </div>
         <button
           @click="handlePagination('next')"

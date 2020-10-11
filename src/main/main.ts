@@ -2,23 +2,15 @@ import { app, BrowserWindow } from "electron";
 import isDev from "electron-is-dev";
 import path from "path";
 import url from "url";
-import { AppContext } from "@/main/context";
-import { IpcMainService } from "./services/IpcMainService";
+import { createContext } from "@/main/context";
 import { createJournalHandlers } from "@/main/features/journal/handlers";
-import Store from "electron-store";
-import { createAboutHandlers } from "@/main/features/about/handlers";
 import { setupMenu } from "@/main/menu";
 
 let mainWindow: BrowserWindow | null;
 
-const context: AppContext = {
-  getAppWindow: () => mainWindow,
-  ipcService: new IpcMainService(),
-  store: new Store()
-};
+const context = createContext(() => mainWindow);
 
 createJournalHandlers(context);
-createAboutHandlers(context);
 
 const createWindow = async () => {
   const preload = path.join(__dirname, "preload.js");
@@ -66,7 +58,7 @@ const createWindow = async () => {
 
 app.whenReady().then(async () => {
   await createWindow();
-  setupMenu();
+  setupMenu(context);
 
   app.on("activate", async () => {
     if (!BrowserWindow.getAllWindows().length) {
