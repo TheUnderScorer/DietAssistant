@@ -23,15 +23,15 @@ export const setupMenu = (context: AppContext) => {
       submenu: [
         {
           label: "Add entry",
-          click: () => {
-            context.journalService.addEntry();
+          click: (_, focusedWindow) => {
+            context.journalService.addEntry(focusedWindow);
           },
           accelerator: "CommandOrControl+N"
         },
         {
           label: "Export as image",
-          click: () => {
-            context.journalService.export();
+          click: (_, focusedWindow) => {
+            context.journalService.export(focusedWindow);
           }
         },
         {

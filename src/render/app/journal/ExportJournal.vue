@@ -15,6 +15,9 @@ import { useJournalExport } from "@/render/app/journal/useJournalExport";
 import { ipcRendererProviderSymbol } from "@/render/providers/ipcRendrerProvider";
 import { inject } from "vue";
 import { IpcRendererService } from "@/render/services/IpcRendererService";
+import { useJournal } from "@/render/app/journal/useJournal";
+import { format } from "date-fns";
+import { pl } from "date-fns/locale";
 
 interface ExportJournalProps {
   journal: Journal;
@@ -29,12 +32,23 @@ export default {
   setup() {
     const ipcService = inject<IpcRendererService>(ipcRendererProviderSymbol);
 
+    const { activeEntry } = useJournal();
     const { isExporting, container } = useJournalExport();
 
     const ignoreElements = (el: Element) =>
       el.classList.contains("ignore-export");
 
     const wait = () => new Promise(resolve => setTimeout(resolve, 1000));
+
+    const getName = (ext: string) => {
+      const date = new Date(activeEntry.value.date!.toString());
+      const weekday = format(date, "eeee", {
+        locale: pl
+      });
+      const dateText = format(date, "dd.MM");
+
+      return `${weekday}${dateText}.${ext}`;
+    };
 
     const exportAsPdf = async () => {
       if (!container) {
@@ -57,7 +71,7 @@ export default {
 
       isExporting.value = false;
 
-      await pdf.save("dzienniczek.pdf");
+      await pdf.save(getName("pdf"));
     };
 
     const exportAsImg = async () => {
@@ -77,7 +91,7 @@ export default {
 
       isExporting.value = false;
 
-      download(data, "dzienniczek.png");
+      download(data, getName("png"));
     };
 
     ipcService?.receive(JournalEvents.ExportRequested, async () => {

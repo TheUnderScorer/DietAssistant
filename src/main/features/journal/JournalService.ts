@@ -2,6 +2,7 @@ import ElectronStore from "electron-store";
 import { Journal, JournalEvents } from "@/shared/features/journal/types";
 import { AppStore } from "@/shared/types/store";
 import { AppWindowProvider } from "@/main/context";
+import { BrowserWindow } from "electron";
 
 export class JournalService {
   private static readonly storeKey = "journal";
@@ -15,14 +16,14 @@ export class JournalService {
     this.store.set(JournalService.storeKey, data);
   }
 
-  addEntry() {
-    const window = this.getAppWindow();
+  addEntry(focusedWindow?: BrowserWindow) {
+    const window = focusedWindow ?? this.getAppWindow();
 
     window?.webContents.send(JournalEvents.AddEntryRequested);
   }
 
-  export() {
-    const window = this.getAppWindow();
+  export(focusedWindow?: BrowserWindow) {
+    const window = focusedWindow ?? this.getAppWindow();
 
     window?.webContents.send(JournalEvents.ExportRequested);
   }

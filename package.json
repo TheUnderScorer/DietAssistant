@@ -10,7 +10,7 @@
     "lint": "vue-cli-service lint",
     "build-electron": "NODE_ENV=\"production\" webpack --config webpack.electron.js",
     "watch-electron": "webpack --config webpack.electron.js -w",
-    "serve-electron": "electron ./build/main.js",
+    "serve-electron": "electron ./build/main.js --remote-debugging-port=9444",
     "build-windows": "electron-builder -w --x64",
     "build-macos": "electron-builder -m",
     "postinstall": "electron-builder install-app-deps",
