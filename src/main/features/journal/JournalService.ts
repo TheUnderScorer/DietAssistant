@@ -1,8 +1,6 @@
 import ElectronStore from "electron-store";
 import { Journal, JournalEvents } from "@/shared/features/journal/types";
 import { AppStore } from "@/shared/types/store";
-import { IpcMainService } from "@/main/services/IpcMainService";
-import { addEntry } from "@/shared/features/journal/addEntry";
 import { AppWindowProvider } from "@/main/context";
 
 export class JournalService {
