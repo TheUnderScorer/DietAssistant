@@ -1,3 +1,11 @@
+# [1.4.0](https://github.com/TheUnderScorer/DietAssistant/compare/v1.3.0...v1.4.0) (2020-10-11)
+
+
+### Features
+
+* Add new entry from menu ([3c714e6](https://github.com/TheUnderScorer/DietAssistant/commit/3c714e6ce665538c62c4db1fd081da3b5948b4fc))
+* Clear journal from menu ([54c4bf4](https://github.com/TheUnderScorer/DietAssistant/commit/54c4bf4967ce23be786344782485c87a7b0562ed))
+
 # [1.3.0](https://github.com/TheUnderScorer/DietAssistant/compare/v1.2.0...v1.3.0) (2020-10-11)
 
 
