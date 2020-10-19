@@ -1,3 +1,15 @@
+# [1.5.0](https://github.com/TheUnderScorer/DietAssistant/compare/v1.4.0...v1.5.0) (2020-10-12)
+
+
+### Bug Fixes
+
+* Scale textarea automatically when switching journal entries ([d1058ca](https://github.com/TheUnderScorer/DietAssistant/commit/d1058cae85c03920eb412061733f317cbdaf754a))
+
+
+### Features
+
+* Use current date as export name ([0a8c0a5](https://github.com/TheUnderScorer/DietAssistant/commit/0a8c0a580990bb7d62e4b350628970147d52d4c3))
+
 # [1.4.0](https://github.com/TheUnderScorer/DietAssistant/compare/v1.3.0...v1.4.0) (2020-10-11)
 
 
