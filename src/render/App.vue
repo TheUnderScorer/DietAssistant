@@ -1,14 +1,10 @@
 <template>
   <Journal />
-  <footer v-if="version">
-    <div>Version: {{ version }}</div>
-  </footer>
 </template>
 
 <script lang="ts">
 import { appProvider } from "@/render/providers/appProvider";
 import Journal from "@/render/app/journal/Journal.vue";
-import { useAppVersion } from "@/render/hooks/useAppVersion";
 
 export default {
   name: "App",
@@ -17,10 +13,6 @@ export default {
   },
   setup() {
     appProvider();
-
-    const { version } = useAppVersion();
-
-    return { version };
   }
 };
 </script>
