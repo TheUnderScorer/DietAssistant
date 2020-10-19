@@ -35,7 +35,7 @@
             <input
               @input="handleChange('date', $event)"
               :value="value.date"
-              type="date"
+              type="text"
               id="date"
             />
           </BoxListItem>
