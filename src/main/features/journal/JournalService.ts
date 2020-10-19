@@ -7,6 +7,7 @@ import { exportJournal, importJournal } from "@/main/features/journal/export";
 
 export class JournalService {
   private static readonly storeKey = "journal";
+  private static readonly lastViewedEntryKey = "lastViewedEntryIndex";
 
   constructor(
     private readonly store: ElectronStore<AppStore>,
@@ -102,6 +103,15 @@ export class JournalService {
   }
 
   async deleteJournal() {
-    await this.store.delete(JournalService.storeKey);
+    this.store.delete(JournalService.storeKey);
+    this.store.delete(JournalService.lastViewedEntryKey);
+  }
+
+  async saveLastViewedEntryIndex(index: number) {
+    this.store.set(JournalService.lastViewedEntryKey, index);
+  }
+
+  async getLastViewedEntryIndex(): Promise<number | null> {
+    return this.store.get(JournalService.lastViewedEntryKey) ?? null;
   }
 }

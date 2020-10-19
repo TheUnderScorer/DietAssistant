@@ -1,5 +1,9 @@
 import { AppContext } from "@/main/context";
-import { Journal, JournalEvents } from "@/shared/features/journal/types";
+import {
+  EntryViewedPayload,
+  Journal,
+  JournalEvents
+} from "@/shared/features/journal/types";
 import { dialog } from "electron";
 import { exportJournal } from "@/main/features/journal/export";
 
@@ -19,7 +23,13 @@ export const createJournalHandlers = ({
     [JournalEvents.ClearJournal]: () => {
       return journalService.deleteJournal();
     },
-    [JournalEvents.ExportJournalData]: handleExport
+    [JournalEvents.ExportJournalData]: handleExport,
+    [JournalEvents.EntryViewed]: async (_, { index }: EntryViewedPayload) => {
+      await journalService.saveLastViewedEntryIndex(index);
+    },
+    [JournalEvents.GetLastViewedEntryIndex]: () => {
+      return journalService.getLastViewedEntryIndex();
+    }
   });
 };
 

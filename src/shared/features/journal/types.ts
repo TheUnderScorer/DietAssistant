@@ -21,6 +21,10 @@ export interface Journal {
   entries: JournalEntry[];
 }
 
+export interface EntryViewedPayload {
+  index: number;
+}
+
 export enum JournalEvents {
   SaveJournal = "SaveJournal",
   GetJournal = "GetJournal",
@@ -29,5 +33,7 @@ export enum JournalEvents {
   ClearJournal = "ClearJournal",
   ClearJournalRequested = "ClearJournalRequested",
   ExportJournalData = "ExportJournalData",
-  JournalDataImported = "JournalDataImported"
+  JournalDataImported = "JournalDataImported",
+  EntryViewed = "EntryViewed",
+  GetLastViewedEntryIndex = "GetLastViewedEntryIndex"
 }

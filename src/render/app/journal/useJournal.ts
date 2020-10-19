@@ -1,5 +1,9 @@
 import { inject, reactive, ref, toRaw, watch, computed } from "vue";
-import { Journal, JournalEvents } from "@/shared/features/journal/types";
+import {
+  EntryViewedPayload,
+  Journal,
+  JournalEvents
+} from "@/shared/features/journal/types";
 import debounce from "lodash.debounce";
 import { ipcRendererProviderSymbol } from "@/render/providers/ipcRendrerProvider";
 import { IpcRendererService } from "@/render/services/IpcRendererService";
@@ -54,6 +58,12 @@ const setupServices = (ipcService: IpcRendererService) => {
     }
   );
 
+  watch(activeIndex, async () => {
+    await ipcService.invoke<EntryViewedPayload>(JournalEvents.EntryViewed, {
+      index: activeIndex.value
+    });
+  });
+
   watch(
     journal,
     debounce(async () => {
@@ -78,7 +88,7 @@ export const useJournal = () => {
 
     ipcService
       .invoke<never, Journal | null>(JournalEvents.GetJournal)
-      .then(result => {
+      .then(async result => {
         setupServices(ipcService);
 
         if (!result?.entries?.length) {
@@ -86,6 +96,14 @@ export const useJournal = () => {
         }
 
         Object.assign(journal, reactive(result));
+
+        const lastActiveIndex = await ipcService.invoke<never, number | null>(
+          JournalEvents.GetLastViewedEntryIndex
+        );
+
+        if (typeof lastActiveIndex === "number") {
+          activeIndex.value = lastActiveIndex;
+        }
       })
       .catch(console.error);
   }
