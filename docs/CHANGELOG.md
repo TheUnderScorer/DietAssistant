@@ -1,3 +1,11 @@
+# [1.6.0](https://github.com/TheUnderScorer/DietAssistant/compare/v1.5.0...v1.6.0) (2020-10-19)
+
+
+### Features
+
+* Import/export journal entries as json ([d82cc3b](https://github.com/TheUnderScorer/DietAssistant/commit/d82cc3b358e0e05bbdfb3953356636655ac0b5ac))
+* Open journal on last viewed entry ([f8f4967](https://github.com/TheUnderScorer/DietAssistant/commit/f8f4967856273fe1d618143d5483a64fc280218e))
+
 # [1.5.0](https://github.com/TheUnderScorer/DietAssistant/compare/v1.4.0...v1.5.0) (2020-10-12)
 
 
