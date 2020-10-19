@@ -27,5 +27,7 @@ export enum JournalEvents {
   AddEntryRequested = "AddEntryRequested",
   ExportRequested = "ExportRequested",
   ClearJournal = "ClearJournal",
-  ClearJournalRequested = "ClearJournalRequested"
+  ClearJournalRequested = "ClearJournalRequested",
+  ExportJournalData = "ExportJournalData",
+  JournalDataImported = "JournalDataImported"
 }

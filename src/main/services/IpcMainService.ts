@@ -14,6 +14,20 @@ export type IpcServiceCallback<
 export class IpcMainService {
   constructor(private readonly ipc: IpcMain = ipcMain) {}
 
+  registerAsMap(map: Record<string, IpcServiceCallback<any, any>>) {
+    const entries = Object.entries(map);
+
+    const unregisterCallbacks = entries.map(([eventName, handler]) => {
+      return this.handle(eventName, handler);
+    });
+
+    return () => {
+      unregisterCallbacks.forEach(callback => {
+        callback();
+      });
+    };
+  }
+
   handle<Args extends object = object, ReturnValue = any>(
     name: string,
     callback: IpcServiceCallback<Args, ReturnValue>

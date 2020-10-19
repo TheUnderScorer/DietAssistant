@@ -47,6 +47,13 @@ const setupServices = (ipcService: IpcRendererService) => {
     addEntry(true);
   });
 
+  ipcService.receive(
+    JournalEvents.JournalDataImported,
+    (_: unknown, importedJournal: Journal) => {
+      Object.assign(journal, reactive(importedJournal));
+    }
+  );
+
   watch(
     journal,
     debounce(async () => {

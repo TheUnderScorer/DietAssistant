@@ -35,6 +35,15 @@ export const setupMenu = (context: AppContext) => {
           }
         },
         {
+          label: "Export as json",
+          click: () => context.journalService.exportData()
+        },
+        {
+          label: "Import from json",
+          click: (_, focusedWindow) =>
+            context.journalService.importData(focusedWindow)
+        },
+        {
           label: "Remove all entries",
           accelerator: "CommandOrControl+D",
           click: async () => {
