@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/TheUnderScorer/DietAssistant/compare/v1.6.0...v1.6.1) (2020-10-19)
+
+
+### Bug Fixes
+
+* Use correct date format ([0b76bd3](https://github.com/TheUnderScorer/DietAssistant/commit/0b76bd38c280a381ddfebf4620dd6912f02d2719))
+
 # [1.6.0](https://github.com/TheUnderScorer/DietAssistant/compare/v1.5.0...v1.6.0) (2020-10-19)
 
 
