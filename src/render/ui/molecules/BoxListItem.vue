@@ -24,11 +24,11 @@ export default {
     labelFor: String,
     wrapperComponent: {
       type: String,
-      default: "li"
+      default: "li",
     },
     className: String,
-    valueClassName: String
-  }
+    valueClassName: String,
+  },
 };
 </script>
 

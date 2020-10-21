@@ -4,17 +4,11 @@
     <main class="main">
       <Logo />
       <hr class="separator" />
-      <h1 class="title">
-        Dzienniczek żywieniowy
-      </h1>
+      <h1 class="title">Dzienniczek żywieniowy</h1>
       <Box>
         <BoxList>
-          <BoxListItem title="Imię nazwisko">
-            Paulina Grzanek
-          </BoxListItem>
-          <BoxListItem title="Wiek">
-            21
-          </BoxListItem>
+          <BoxListItem title="Imię nazwisko"> Paulina Grzanek </BoxListItem>
+          <BoxListItem title="Wiek"> 21 </BoxListItem>
           <BoxListItem title="Cel wizyty">
             odchudzanie, dieta pcos
           </BoxListItem>
@@ -111,10 +105,10 @@ export default {
     Logo,
     BoxList,
     BoxListItem,
-    BoxSpaceText
+    BoxSpaceText,
   },
   props: {
-    value: Object
+    value: Object,
   },
   emits: ["update"],
   setup(props: JournalEntryProps, { emit }: SetupContext) {
@@ -133,9 +127,9 @@ export default {
 
     return {
       handleChange,
-      handleFoodsUpdate
+      handleFoodsUpdate,
     };
-  }
+  },
 };
 </script>
 

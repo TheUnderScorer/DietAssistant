@@ -9,11 +9,11 @@ import Journal from "@/render/app/journal/Journal.vue";
 export default {
   name: "App",
   components: {
-    Journal
+    Journal,
   },
   setup() {
     appProvider();
-  }
+  },
 };
 </script>
 

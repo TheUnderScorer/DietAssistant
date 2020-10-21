@@ -3,21 +3,11 @@
     <table>
       <thead>
         <tr>
-          <th>
-            Godzina
-          </th>
-          <th>
-            Posiłek i/lub napój
-          </th>
-          <th>
-            Z jakich produktów składał się posiłek?
-          </th>
-          <th>
-            Miary domowe/gramaturowe
-          </th>
-          <th>
-            Miejsce posiłku
-          </th>
+          <th>Godzina</th>
+          <th>Posiłek i/lub napój</th>
+          <th>Z jakich produktów składał się posiłek?</th>
+          <th>Miary domowe/gramaturowe</th>
+          <th>Miejsce posiłku</th>
         </tr>
       </thead>
       <tbody>
@@ -73,7 +63,7 @@ interface FoodEntriesTableProps {
 export default {
   components: { Textarea },
   props: {
-    value: Array
+    value: Array,
   },
   emits: ["update"],
   setup(props: FoodEntriesTableProps, { emit }: SetupContext) {
@@ -84,9 +74,9 @@ export default {
     };
 
     return {
-      handleChange
+      handleChange,
     };
-  }
+  },
 };
 </script>
 

@@ -7,8 +7,8 @@
 <script lang="ts">
 export default {
   props: {
-    secondary: Boolean
-  }
+    secondary: Boolean,
+  },
 };
 </script>
 

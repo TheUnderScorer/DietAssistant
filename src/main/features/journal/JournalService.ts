@@ -30,6 +30,12 @@ export class JournalService {
     window?.webContents.send(JournalEvents.ExportRequested);
   }
 
+  exportAll(focusedWindow?: BrowserWindow) {
+    const window = focusedWindow ?? this.getAppWindow();
+
+    window?.webContents.send(JournalEvents.ExportAllRequested);
+  }
+
   async importData(focusedWindow?: BrowserWindow) {
     const window = focusedWindow ?? this.getAppWindow();
 
@@ -37,11 +43,11 @@ export class JournalService {
       filters: [
         {
           extensions: ["json"],
-          name: "Json"
-        }
+          name: "Json",
+        },
       ],
       message: "Select .json file with exported data",
-      properties: ["openFile"]
+      properties: ["openFile"],
     });
 
     if (!filePaths.length) {
@@ -57,7 +63,7 @@ export class JournalService {
     } catch (e) {
       await dialog.showMessageBox({
         title: "Import error",
-        message: e.message
+        message: e.message,
       });
     }
   }
@@ -74,9 +80,9 @@ export class JournalService {
       filters: [
         {
           extensions: ["json"],
-          name: "Json"
-        }
-      ]
+          name: "Json",
+        },
+      ],
     });
 
     if (!filePath) {
@@ -89,7 +95,7 @@ export class JournalService {
       await dialog.showMessageBox({
         title: "Export error",
         message:
-          "Unable to export journal, make sure that selected path is writeable."
+          "Unable to export journal, make sure that selected path is writeable.",
       });
 
       return false;

@@ -1,9 +1,12 @@
 import { IpcRenderer } from "electron";
+import { Obj } from "@/shared/types/common";
 
 export class IpcRendererService {
-  constructor(private readonly ipc: IpcRenderer = window.ipcRenderer) {}
+  constructor(private readonly ipc: IpcRenderer = window.ipcRenderer) {
+    this.ipc.setMaxListeners(20);
+  }
 
-  async invoke<Arg extends object = object, ReturnValue = any>(
+  async invoke<Arg extends Obj = Obj, ReturnValue = any>(
     name: string,
     arg?: Arg
   ): Promise<ReturnValue> {

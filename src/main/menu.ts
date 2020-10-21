@@ -10,13 +10,13 @@ export const setupMenu = (context: AppContext) => {
       submenu: [
         {
           label: "About",
-          role: "about"
+          role: "about",
         },
         {
           label: "Quit",
-          role: "close"
-        }
-      ]
+          role: "close",
+        },
+      ],
     },
     {
       label: "Journal",
@@ -26,32 +26,38 @@ export const setupMenu = (context: AppContext) => {
           click: (_, focusedWindow) => {
             context.journalService.addEntry(focusedWindow);
           },
-          accelerator: "CommandOrControl+N"
+          accelerator: "CommandOrControl+N",
         },
         {
           label: "Export as image",
           click: (_, focusedWindow) => {
             context.journalService.export(focusedWindow);
-          }
+          },
+        },
+        {
+          label: "Export all as image",
+          click: (_, focusedWindow) => {
+            context.journalService.exportAll(focusedWindow);
+          },
         },
         {
           label: "Export as json",
-          click: () => context.journalService.exportData()
+          click: () => context.journalService.exportData(),
         },
         {
           label: "Import from json",
           click: (_, focusedWindow) =>
-            context.journalService.importData(focusedWindow)
+            context.journalService.importData(focusedWindow),
         },
         {
           label: "Remove all entries",
           accelerator: "CommandOrControl+D",
-          click: async () => {
+          click: async (_, focusedWindow) => {
             const { response } = await dialog.showMessageBox({
               buttons: ["Yes", "No"],
               title: "Clear journal",
               message:
-                "Are you sure you want to clear your journal? It cannot be undone!"
+                "Are you sure you want to clear your journal? It cannot be undone!",
             });
 
             if (response !== 0) {
@@ -60,12 +66,12 @@ export const setupMenu = (context: AppContext) => {
 
             await context.journalService.deleteJournal();
 
-            const appWindow = context.getAppWindow();
-            appWindow?.webContents.send(JournalEvents.ClearJournalRequested);
-          }
-        }
-      ]
-    }
+            const window = focusedWindow ?? context.getAppWindow();
+            window?.webContents.send(JournalEvents.ClearJournalRequested);
+          },
+        },
+      ],
+    },
   ];
 
   if (isDev) {
@@ -74,13 +80,13 @@ export const setupMenu = (context: AppContext) => {
       submenu: [
         {
           label: "Open dev tools",
-          role: "toggleDevTools"
+          role: "toggleDevTools",
         },
         {
           label: "Reload",
-          role: "reload"
-        }
-      ]
+          role: "reload",
+        },
+      ],
     });
   }
 

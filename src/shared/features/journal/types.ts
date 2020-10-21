@@ -30,10 +30,19 @@ export enum JournalEvents {
   GetJournal = "GetJournal",
   AddEntryRequested = "AddEntryRequested",
   ExportRequested = "ExportRequested",
+  ExportAllRequested = "ExportAllRequested",
+  ExportAllAsImage = "ExportAllAsImage",
   ClearJournal = "ClearJournal",
   ClearJournalRequested = "ClearJournalRequested",
   ExportJournalData = "ExportJournalData",
   JournalDataImported = "JournalDataImported",
   EntryViewed = "EntryViewed",
-  GetLastViewedEntryIndex = "GetLastViewedEntryIndex"
+  GetLastViewedEntryIndex = "GetLastViewedEntryIndex",
 }
+
+export interface ExportAllAsImagePayloadItem {
+  entry: JournalEntry;
+  image: string;
+}
+
+export type ExportAllAsImagePayload = ExportAllAsImagePayloadItem[];

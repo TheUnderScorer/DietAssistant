@@ -24,8 +24,8 @@ const createWindow = async () => {
     titleBarStyle: "default",
     webPreferences: {
       preload,
-      nodeIntegration: false
-    }
+      nodeIntegration: false,
+    },
   });
 
   // Either use vue server when on dev, or production build otherwise.
@@ -34,7 +34,7 @@ const createWindow = async () => {
     : url.format({
         pathname: path.join(__dirname, "index.html"),
         protocol: "file:",
-        slashes: true
+        slashes: true,
       });
 
   console.log(`Using ${startUrl} as renderer url.`);
@@ -45,7 +45,7 @@ const createWindow = async () => {
     mainWindow.webContents.once("dom-ready", () => {
       if (mainWindow) {
         mainWindow.webContents.openDevTools({
-          mode: "right"
+          mode: "right",
         });
       }
     });

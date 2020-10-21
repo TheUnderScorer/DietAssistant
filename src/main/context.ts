@@ -26,6 +26,6 @@ export const createContext = (
     getAppWindow: mainWindowProvider,
     ipcService,
     store,
-    journalService
+    journalService,
   };
 };

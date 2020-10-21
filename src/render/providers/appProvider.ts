@@ -1,7 +1,7 @@
 import { provide } from "vue";
 import {
   ipcRenderer,
-  ipcRendererProviderSymbol
+  ipcRendererProviderSymbol,
 } from "@/render/providers/ipcRendrerProvider";
 
 export const appProvider = () => {

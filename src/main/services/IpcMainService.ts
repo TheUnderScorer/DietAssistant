@@ -1,18 +1,18 @@
 import { ipcMain, IpcMain, IpcMainInvokeEvent } from "electron";
+import { Obj } from "@/shared/types/common";
 
 /**
  * Definition of callback that will be triggered on message from renderer process
  * */
-export type IpcServiceCallback<
-  Args extends object = object,
-  ReturnValue = any
-> = (
+export type IpcServiceCallback<Args extends Obj = Obj, ReturnValue = any> = (
   event: IpcMainInvokeEvent,
   args: Args
 ) => ReturnValue | Promise<ReturnValue>;
 
 export class IpcMainService {
-  constructor(private readonly ipc: IpcMain = ipcMain) {}
+  constructor(private readonly ipc: IpcMain = ipcMain) {
+    this.ipc.setMaxListeners(20);
+  }
 
   registerAsMap(map: Record<string, IpcServiceCallback<any, any>>) {
     const entries = Object.entries(map);
@@ -22,13 +22,13 @@ export class IpcMainService {
     });
 
     return () => {
-      unregisterCallbacks.forEach(callback => {
+      unregisterCallbacks.forEach((callback) => {
         callback();
       });
     };
   }
 
-  handle<Args extends object = object, ReturnValue = any>(
+  handle<Args extends Obj = Obj, ReturnValue = any>(
     name: string,
     callback: IpcServiceCallback<Args, ReturnValue>
   ) {
@@ -37,7 +37,7 @@ export class IpcMainService {
         return await callback(event, args);
       } catch (e) {
         return {
-          error: e
+          error: e,
         };
       }
     };

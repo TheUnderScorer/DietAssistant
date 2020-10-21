@@ -1,7 +1,8 @@
 <template>
   <div class="journal-container">
-    <div v-if="loading">
-      Loading...
+    <div v-if="loading">Loading...</div>
+    <div v-if="isExporting">
+      <FullPageLoader message="Exporting..." />
     </div>
     <div v-if="!loading">
       <JournalEntry
@@ -40,17 +41,21 @@ import JournalEntry from "@/render/app/journal/JournalEntry.vue";
 import { JournalEntry as JournalEntryType } from "@/shared/features/journal/types";
 import ExportJournal from "@/render/app/journal/ExportJournal.vue";
 import { computed } from "vue";
+import { useJournalExport } from "@/render/app/journal/useJournalExport";
+import FullPageLoader from "@/render/ui/molecules/FullPageLoader.vue";
 
 export default {
-  components: { ExportJournal, JournalEntry },
+  components: { FullPageLoader, ExportJournal, JournalEntry },
   setup() {
     const {
       journal,
       loading,
       activeIndex,
       addEntry,
-      removeEntries
+      removeEntries,
     } = useJournal();
+
+    const { isExporting } = useJournalExport();
 
     const showPagination = computed(() => journal.entries.length > 1);
 
@@ -79,9 +84,10 @@ export default {
       addEntry,
       handlePagination,
       showPagination,
-      removeEntries
+      removeEntries,
+      isExporting,
     };
-  }
+  },
 };
 </script>
 
@@ -89,6 +95,7 @@ export default {
 .journal-container {
   overflow: auto;
   height: 100%;
+  position: relative;
 }
 
 .wrapper {

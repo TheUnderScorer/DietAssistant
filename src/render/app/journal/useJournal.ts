@@ -1,21 +1,22 @@
-import { inject, reactive, ref, toRaw, watch, computed } from "vue";
+import { computed, inject, reactive, ref, toRaw, watch } from "vue";
 import {
   EntryViewedPayload,
   Journal,
-  JournalEvents
+  JournalEvents,
 } from "@/shared/features/journal/types";
 import debounce from "lodash.debounce";
 import { ipcRendererProviderSymbol } from "@/render/providers/ipcRendrerProvider";
 import { IpcRendererService } from "@/render/services/IpcRendererService";
 import { createJournalEntry } from "@/shared/features/journal/createJournalEntry";
 import { addEntry as addJournalEntry } from "@/shared/features/journal/addEntry";
+import { journalEntryToRaw } from "@/render/converters/journalEntryToRaw";
 
 const didInitialFetch = ref(false);
 const activeIndex = ref(0);
 const loading = ref(true);
 
 const journal = reactive<Journal>({
-  entries: [createJournalEntry()]
+  entries: [createJournalEntry()],
 });
 
 const addEntry = (setAsActive = true) => {
@@ -60,7 +61,7 @@ const setupServices = (ipcService: IpcRendererService) => {
 
   watch(activeIndex, async () => {
     await ipcService.invoke<EntryViewedPayload>(JournalEvents.EntryViewed, {
-      index: activeIndex.value
+      index: activeIndex.value,
     });
   });
 
@@ -69,10 +70,7 @@ const setupServices = (ipcService: IpcRendererService) => {
     debounce(async () => {
       const rawJournal: Journal = {
         ...toRaw(journal),
-        entries: journal.entries.map(entry => ({
-          ...toRaw(entry),
-          foods: entry.foods.map(food => toRaw(food))
-        }))
+        entries: journal.entries.map(journalEntryToRaw),
       };
 
       await ipcService.invoke(JournalEvents.SaveJournal, rawJournal);
@@ -83,12 +81,12 @@ const setupServices = (ipcService: IpcRendererService) => {
 export const useJournal = () => {
   const ipcService = inject<IpcRendererService>(ipcRendererProviderSymbol)!;
 
-  if (!didInitialFetch.value) {
+  if (!didInitialFetch.value && ipcService) {
     didInitialFetch.value = true;
 
     ipcService
       .invoke<never, Journal | null>(JournalEvents.GetJournal)
-      .then(async result => {
+      .then(async (result) => {
         setupServices(ipcService);
 
         if (!result?.entries?.length) {
@@ -119,6 +117,6 @@ export const useJournal = () => {
     activeEntry,
     addEntry,
     didInitialFetch,
-    removeEntries: () => removeEntries(ipcService)
+    removeEntries: () => removeEntries(ipcService),
   };
 };

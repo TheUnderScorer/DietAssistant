@@ -10,8 +10,8 @@
 <script lang="ts">
 export default {
   props: {
-    position: String
-  }
+    position: String,
+  },
 };
 </script>
 

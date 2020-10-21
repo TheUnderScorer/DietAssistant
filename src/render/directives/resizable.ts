@@ -9,10 +9,10 @@ export const resizable: Directive<HTMLElement> = {
   mounted(el) {
     resize(el);
 
-    el.addEventListener("input", e => {
+    el.addEventListener("input", (e) => {
       const target = e.target as HTMLElement;
 
       resize(target);
     });
-  }
+  },
 };

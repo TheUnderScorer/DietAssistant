@@ -1,7 +1,7 @@
 <template>
   <span
     :ref="
-      el => {
+      (el) => {
         container = el;
       }
     "
@@ -35,7 +35,7 @@ interface TextareaProps {
 
 export default {
   props: {
-    value: String
+    value: String,
   },
   emits: ["update"],
   setup(props: TextareaProps) {
@@ -67,9 +67,9 @@ export default {
       type,
       handleFocus,
       handleBlur,
-      container
+      container,
     };
-  }
+  },
 };
 </script>
 

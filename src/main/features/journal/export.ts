@@ -5,7 +5,7 @@ export const exportJournal = async (journal: Journal, path: string) => {
   const json = JSON.stringify(journal, null, " ");
 
   await fs.promises.writeFile(path, json, {
-    encoding: "utf8"
+    encoding: "utf8",
   });
 };
 
