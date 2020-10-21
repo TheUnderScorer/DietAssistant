@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/TheUnderScorer/DietAssistant/compare/v1.6.1...v1.7.0) (2020-10-21)
+
+
+### Features
+
+* Export all entries to image at once ([2534530](https://github.com/TheUnderScorer/DietAssistant/commit/253453072b52c338ae278d73cc131a99fe9377f0))
+
 ## [1.6.1](https://github.com/TheUnderScorer/DietAssistant/compare/v1.6.0...v1.6.1) (2020-10-19)
 
 
