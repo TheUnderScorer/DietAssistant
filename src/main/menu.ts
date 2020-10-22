@@ -2,8 +2,16 @@ import { dialog, Menu, MenuItemConstructorOptions } from "electron";
 import isDev from "electron-is-dev";
 import { AppContext } from "@/main/context";
 import { JournalEvents } from "@/shared/features/journal/types";
+import { confirmAction } from "@/main/confirmation";
 
-export const setupMenu = (context: AppContext) => {
+export const setupMenuFactory = (
+  context: Omit<AppContext, "renderMenu">
+) => async () => {
+  const journal = await context.journalService.getJournal();
+
+  const entriesCount = journal?.entries.length ?? 0;
+  const hasMoreThanOneEntry = Boolean(journal) && journal!.entries.length > 1;
+
   const template: MenuItemConstructorOptions[] = [
     {
       label: "Diet Assistant",
@@ -35,7 +43,7 @@ export const setupMenu = (context: AppContext) => {
           },
         },
         {
-          label: "Export all as image",
+          label: `Export all as image (${entriesCount})`,
           click: (_, focusedWindow) => {
             context.journalService.exportAll(focusedWindow);
           },
@@ -50,8 +58,25 @@ export const setupMenu = (context: AppContext) => {
             context.journalService.importData(focusedWindow),
         },
         {
-          label: "Remove all entries",
+          label: "Remove current entry",
           accelerator: "CommandOrControl+D",
+          enabled: hasMoreThanOneEntry,
+          click: async (_, focusedWindow) => {
+            const confirmResult = await confirmAction(
+              "Remove current entry.",
+              "Are you sure you want to remove current entry? It cannot be undone!"
+            );
+
+            if (!confirmResult) {
+              return;
+            }
+
+            return context.journalService.removeCurrentEntry(focusedWindow);
+          },
+        },
+        {
+          label: `Remove all entries (${entriesCount})`,
+          enabled: hasMoreThanOneEntry,
           click: async (_, focusedWindow) => {
             const { response } = await dialog.showMessageBox({
               buttons: ["Yes", "No"],

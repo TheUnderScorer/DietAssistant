@@ -9,7 +9,7 @@ import { ipcRendererProviderSymbol } from "@/render/providers/ipcRendrerProvider
 import { IpcRendererService } from "@/render/services/IpcRendererService";
 import { createJournalEntry } from "@/shared/features/journal/createJournalEntry";
 import { addEntry as addJournalEntry } from "@/shared/features/journal/addEntry";
-import { journalEntryToRaw } from "@/render/converters/journalEntryToRaw";
+import { journalEntryToRaw } from "@/render/app/journal/converters/journalEntryToRaw";
 
 const didInitialFetch = ref(false);
 const activeIndex = ref(0);
@@ -40,6 +40,18 @@ const removeEntries = async (ipcService: IpcRendererService) => {
   activeIndex.value = 0;
 };
 
+const removeCurrentEntry = () => {
+  if (journal.entries.length <= 1) {
+    return;
+  }
+
+  const index = activeIndex.value;
+
+  journal.entries.splice(index, 1);
+
+  activeIndex.value = journal.entries.length - 1;
+};
+
 const activeEntry = computed(() => journal.entries[activeIndex.value]);
 
 const setupServices = (ipcService: IpcRendererService) => {
@@ -57,6 +69,11 @@ const setupServices = (ipcService: IpcRendererService) => {
     (_: unknown, importedJournal: Journal) => {
       Object.assign(journal, reactive(importedJournal));
     }
+  );
+
+  ipcService.receive(
+    JournalEvents.RemoveCurrentEntryRequested,
+    removeCurrentEntry
   );
 
   watch(activeIndex, async () => {
@@ -117,6 +134,7 @@ export const useJournal = () => {
     activeEntry,
     addEntry,
     didInitialFetch,
+    removeCurrentEntry,
     removeEntries: () => removeEntries(ipcService),
   };
 };

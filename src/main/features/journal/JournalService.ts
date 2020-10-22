@@ -9,10 +9,16 @@ export class JournalService {
   private static readonly storeKey = "journal";
   private static readonly lastViewedEntryKey = "lastViewedEntryIndex";
 
+  public menuRenderer!: () => Promise<void>;
+
   constructor(
     private readonly store: ElectronStore<AppStore>,
     private readonly getAppWindow: AppWindowProvider
-  ) {}
+  ) {
+    this.store.onDidChange(JournalService.storeKey, async () => {
+      await this.menuRenderer();
+    });
+  }
 
   saveJournal(data: Journal) {
     this.store.set(JournalService.storeKey, data);
@@ -34,6 +40,12 @@ export class JournalService {
     const window = focusedWindow ?? this.getAppWindow();
 
     window?.webContents.send(JournalEvents.ExportAllRequested);
+  }
+
+  async removeCurrentEntry(focusedWindow?: BrowserWindow) {
+    const window = focusedWindow ?? this.getAppWindow();
+
+    window?.webContents.send(JournalEvents.RemoveCurrentEntryRequested);
   }
 
   async importData(focusedWindow?: BrowserWindow) {

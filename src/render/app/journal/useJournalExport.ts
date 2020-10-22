@@ -12,7 +12,7 @@ import { useJournal } from "@/render/app/journal/useJournal";
 import { executeSequentially } from "@/shared/utils/promises";
 import { blobToBase64 } from "@/shared/utils/base64";
 import { getEntryFileName } from "@/shared/features/journal/getEntryFileName";
-import { journalEntryToRaw } from "@/render/converters/journalEntryToRaw";
+import { journalEntryToRaw } from "@/render/app/journal/converters/journalEntryToRaw";
 
 const isExporting = ref(false);
 const container = document.body;

@@ -4,11 +4,11 @@ import path from "path";
 import url from "url";
 import { createContext } from "@/main/context";
 import { createJournalHandlers } from "@/main/features/journal/handlers";
-import { setupMenu } from "@/main/menu";
 
 let mainWindow: BrowserWindow | null;
 
 const context = createContext(() => mainWindow);
+context.renderMenu().catch(console.error);
 
 createJournalHandlers(context);
 
@@ -58,7 +58,6 @@ const createWindow = async () => {
 
 app.whenReady().then(async () => {
   await createWindow();
-  setupMenu(context);
 
   app.on("activate", async () => {
     if (!BrowserWindow.getAllWindows().length) {

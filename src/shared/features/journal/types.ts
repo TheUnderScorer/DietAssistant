@@ -38,6 +38,7 @@ export enum JournalEvents {
   JournalDataImported = "JournalDataImported",
   EntryViewed = "EntryViewed",
   GetLastViewedEntryIndex = "GetLastViewedEntryIndex",
+  RemoveCurrentEntryRequested = "RemoveCurrentEntryRequested",
 }
 
 export interface ExportAllAsImagePayloadItem {
