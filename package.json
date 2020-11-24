@@ -85,7 +85,7 @@
     "appId": "pz.dietAssitant",
     "win": {
       "target": [
-        "squirrel"
+        "msi"
       ]
     },
     "mac": {
