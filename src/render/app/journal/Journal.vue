@@ -1,36 +1,42 @@
 <template>
   <div class="journal-container">
-    <div v-if="loading">Loading...</div>
+    <div v-if="loading"><FullPageLoader /></div>
     <div v-if="isExporting">
       <FullPageLoader message="Exporting..." />
     </div>
     <div v-if="!loading">
-      <JournalEntry
-        @update="handleUpdate"
-        :value="journal.entries[activeIndex]"
-      />
-      <div
+      <Toolbar
         class="actions ignore-export"
         :class="{ noPagination: !showPagination }"
       >
-        <button
-          @click="handlePagination('prev')"
-          v-if="showPagination"
-          :disabled="activeIndex === 0"
-        >
-          Prev
-        </button>
-        <div class="buttons">
-          <ExportJournal :active-index="activeIndex" :entries="journal" />
-        </div>
-        <button
-          @click="handlePagination('next')"
-          v-if="showPagination"
-          :disabled="activeIndex >= journal.entries.length - 1"
-        >
-          Next
-        </button>
-      </div>
+        <template v-slot:left>
+          <Button
+            icon="pi pi-chevron-left"
+            class="p-button-secondary"
+            @click="handlePagination('prev')"
+            v-if="showPagination"
+            :disabled="activeIndex === 0"
+          />
+          <Button
+            icon="pi pi-chevron-right"
+            class="p-button-secondary"
+            @click="handlePagination('next')"
+            v-if="showPagination"
+            :disabled="activeIndex >= journal.entries.length - 1"
+          />
+        </template>
+        <template v-slot:right>
+          <div class="buttons">
+            <ExportJournal :active-index="activeIndex" :entries="journal" />
+          </div>
+        </template>
+      </Toolbar>
+      <JournalEntry
+        class="journal-entry"
+        :class="{ 'is-exporting': isExporting }"
+        @update="handleUpdate"
+        :value="journal.entries[activeIndex]"
+      />
     </div>
   </div>
 </template>
@@ -141,7 +147,12 @@ hr.separator {
 }
 
 .actions {
-  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 9;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .actions.noPagination {
@@ -150,5 +161,13 @@ hr.separator {
 
 .buttons {
   justify-content: center;
+}
+
+.journal-entry {
+  padding-bottom: 1.2rem;
+
+  &:not(.is-exporting) {
+    padding-top: 3rem;
+  }
 }
 </style>
