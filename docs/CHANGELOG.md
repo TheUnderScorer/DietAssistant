@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/TheUnderScorer/DietAssistant/compare/v1.9.0...v1.10.0) (2020-11-24)
+
+
+### Features
+
+* Change windows build target ([d95caff](https://github.com/TheUnderScorer/DietAssistant/commit/d95caff3b9971a84ee69ef6489ea95cf97bd9cf0))
+
 # [1.9.0](https://github.com/TheUnderScorer/DietAssistant/compare/v1.8.0...v1.9.0) (2020-11-24)
 
 
