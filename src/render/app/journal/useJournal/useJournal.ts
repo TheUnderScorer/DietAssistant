@@ -1,15 +1,10 @@
-import { computed, inject, reactive, ref, toRaw, watch } from "vue";
-import {
-  EntryViewedPayload,
-  Journal,
-  JournalEvents,
-} from "@/shared/features/journal/types";
-import debounce from "lodash.debounce";
+import { computed, inject, reactive, ref } from "vue";
+import { Journal, JournalEvents } from "@/shared/features/journal/types";
 import { ipcRendererProviderSymbol } from "@/render/providers/ipcRendrerProvider";
 import { IpcRendererService } from "@/render/services/IpcRendererService";
 import { createJournalEntry } from "@/shared/features/journal/createJournalEntry";
 import { addEntry as addJournalEntry } from "@/shared/features/journal/addEntry";
-import { journalEntryToRaw } from "@/render/app/journal/converters/journalEntryToRaw";
+import { setupJournal } from "@/render/app/journal/useJournal/setupJournal";
 
 const didInitialFetch = ref(false);
 const activeIndex = ref(0);
@@ -54,49 +49,23 @@ const removeCurrentEntry = () => {
 
 const activeEntry = computed(() => journal.entries[activeIndex.value]);
 
-const setupServices = (ipcService: IpcRendererService) => {
-  ipcService.receive(JournalEvents.ClearJournalRequested, async () => {
-    journal.entries = [createJournalEntry()];
-    activeIndex.value = 0;
-  });
-
-  ipcService.receive(JournalEvents.AddEntryRequested, () => {
-    addEntry(true);
-  });
-
-  ipcService.receive(
-    JournalEvents.JournalDataImported,
-    (_: unknown, importedJournal: Journal) => {
-      Object.assign(journal, reactive(importedJournal));
-    }
-  );
-
-  ipcService.receive(
-    JournalEvents.RemoveCurrentEntryRequested,
-    removeCurrentEntry
-  );
-
-  watch(activeIndex, async () => {
-    await ipcService.invoke<EntryViewedPayload>(JournalEvents.EntryViewed, {
-      index: activeIndex.value,
-    });
-  });
-
-  watch(
-    journal,
-    debounce(async () => {
-      const rawJournal: Journal = {
-        ...toRaw(journal),
-        entries: journal.entries.map(journalEntryToRaw),
-      };
-
-      await ipcService.invoke(JournalEvents.SaveJournal, rawJournal);
-    }, 1000)
-  );
-};
-
 export const useJournal = () => {
   const ipcService = inject<IpcRendererService>(ipcRendererProviderSymbol)!;
+
+  setTimeout(() => {
+    loading.value = false;
+  }, 1500);
+
+  const hookResult = {
+    journal,
+    loading,
+    activeIndex,
+    activeEntry,
+    addEntry,
+    didInitialFetch,
+    removeCurrentEntry,
+    removeEntries: () => removeEntries(ipcService),
+  };
 
   if (!didInitialFetch.value && ipcService) {
     didInitialFetch.value = true;
@@ -104,7 +73,7 @@ export const useJournal = () => {
     ipcService
       .invoke<never, Journal | null>(JournalEvents.GetJournal)
       .then(async (result) => {
-        setupServices(ipcService);
+        setupJournal(ipcService, hookResult);
 
         if (!result?.entries?.length) {
           return;
@@ -123,18 +92,5 @@ export const useJournal = () => {
       .catch(console.error);
   }
 
-  setTimeout(() => {
-    loading.value = false;
-  }, 1500);
-
-  return {
-    journal,
-    loading,
-    activeIndex,
-    activeEntry,
-    addEntry,
-    didInitialFetch,
-    removeCurrentEntry,
-    removeEntries: () => removeEntries(ipcService),
-  };
+  return hookResult;
 };
