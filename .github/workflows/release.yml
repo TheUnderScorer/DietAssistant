@@ -43,7 +43,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: DietAssistant.exe
-          path: electron/output/DietAssistant.msi
+          path: electron/output/DietAssistant.exe
 
       - name: Upload Artifact
         id: upload_artifact_mac
