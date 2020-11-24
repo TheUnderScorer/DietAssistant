@@ -8,7 +8,7 @@ import {
 } from "@/shared/features/journal/types";
 import { IpcRendererService } from "@/render/services/IpcRendererService";
 import { ipcRendererProviderSymbol } from "@/render/providers/ipcRendrerProvider";
-import { useJournal } from "@/render/app/journal/useJournal";
+import { useJournal } from "@/render/app/journal/useJournal/useJournal";
 import { executeSequentially } from "@/shared/utils/promises";
 import { blobToBase64 } from "@/shared/utils/base64";
 import { getEntryFileName } from "@/shared/features/journal/getEntryFileName";

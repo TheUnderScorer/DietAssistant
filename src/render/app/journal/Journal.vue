@@ -1,79 +1,47 @@
 <template>
   <div class="journal-container">
-    <div v-if="loading">Loading...</div>
+    <div v-if="loading"><FullPageLoader /></div>
     <div v-if="isExporting">
       <FullPageLoader message="Exporting..." />
     </div>
     <div v-if="!loading">
+      <JournalToolbar />
       <JournalEntry
+        class="journal-entry"
+        :class="{ 'is-exporting': isExporting }"
         @update="handleUpdate"
         :value="journal.entries[activeIndex]"
       />
-      <div
-        class="actions ignore-export"
-        :class="{ noPagination: !showPagination }"
-      >
-        <button
-          @click="handlePagination('prev')"
-          v-if="showPagination"
-          :disabled="activeIndex === 0"
-        >
-          Prev
-        </button>
-        <div class="buttons">
-          <ExportJournal :active-index="activeIndex" :entries="journal" />
-        </div>
-        <button
-          @click="handlePagination('next')"
-          v-if="showPagination"
-          :disabled="activeIndex >= journal.entries.length - 1"
-        >
-          Next
-        </button>
-      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { useJournal } from "@/render/app/journal/useJournal";
+import { useJournal } from "@/render/app/journal/useJournal/useJournal";
 import JournalEntry from "@/render/app/journal/JournalEntry.vue";
 import { JournalEntry as JournalEntryType } from "@/shared/features/journal/types";
-import ExportJournal from "@/render/app/journal/ExportJournal.vue";
-import { computed } from "vue";
 import { useJournalExport } from "@/render/app/journal/useJournalExport";
 import FullPageLoader from "@/render/ui/molecules/FullPageLoader.vue";
+import JournalToolbar from "@/render/app/journal/JournalToolbar.vue";
+import { reactive } from "vue";
 
 export default {
-  components: { FullPageLoader, ExportJournal, JournalEntry },
+  components: { JournalToolbar, FullPageLoader, JournalEntry },
   setup() {
-    const {
-      journal,
-      loading,
-      activeIndex,
-      addEntry,
-      removeEntries,
-    } = useJournal();
+    const { journal, loading, activeIndex, activeEntry } = useJournal();
 
     const { isExporting } = useJournalExport();
-
-    const showPagination = computed(() => journal.entries.length > 1);
 
     const handleUpdate = <Key extends keyof JournalEntryType>(
       key: Key,
       value: JournalEntryType[Key]
     ) => {
-      journal.entries[activeIndex.value][key] = value;
-    };
+      const newEntry = {
+        ...activeEntry.value,
+        [key]: value,
+      };
 
-    const handlePagination = (action: "prev" | "next") => {
-      if (action === "prev") {
-        activeIndex.value = activeIndex.value - 1;
-
-        return;
-      }
-
-      activeIndex.value = activeIndex.value + 1;
+      journal.entries[activeIndex.value] = reactive(newEntry);
     };
 
     return {
@@ -81,10 +49,6 @@ export default {
       handleUpdate,
       loading,
       activeIndex,
-      addEntry,
-      handlePagination,
-      showPagination,
-      removeEntries,
       isExporting,
     };
   },
@@ -141,7 +105,12 @@ hr.separator {
 }
 
 .actions {
-  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 9;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .actions.noPagination {
@@ -150,5 +119,13 @@ hr.separator {
 
 .buttons {
   justify-content: center;
+}
+
+.journal-entry {
+  padding-bottom: 1.2rem;
+
+  &:not(.is-exporting) {
+    padding-top: 3rem;
+  }
 }
 </style>

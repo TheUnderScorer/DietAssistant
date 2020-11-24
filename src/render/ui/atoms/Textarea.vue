@@ -6,14 +6,14 @@
       }
     "
   >
-    <textarea
+    <BaseTextarea
       v-resizable
       v-if="type === 'textarea'"
       :value="value"
       @input="$emit('update', $event)"
       class="textarea-component"
       @blur="handleBlur"
-    ></textarea>
+    />
     <div
       v-if="type === 'div'"
       contenteditable="true"
@@ -28,6 +28,7 @@
 <script lang="ts">
 import { useJournalExport } from "@/render/app/journal/useJournalExport";
 import { computed, ref } from "vue";
+import BaseTextarea from "primevue/textarea";
 
 interface TextareaProps {
   value: string;
@@ -36,6 +37,9 @@ interface TextareaProps {
 export default {
   props: {
     value: String,
+  },
+  components: {
+    BaseTextarea,
   },
   emits: ["update"],
   setup(props: TextareaProps) {

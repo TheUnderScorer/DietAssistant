@@ -1,8 +1,9 @@
 <template>
-  <div class="full-page-loader ignore-export">
-    <span>
-      {{ message ?? "Loading..." }}
-    </span>
+  <div
+    class="full-page-loader ignore-export p-d-flex p-flex-column p-align-center p-justify-center"
+  >
+    <ProgressSpinner class="p-mb-2" />
+    {{ message ?? "Loading..." }}
   </div>
 </template>
 
@@ -16,8 +17,9 @@ export default {
 
 <style scoped lang="scss">
 .full-page-loader {
+  user-select: none;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   position: fixed;
   top: 0;
   display: flex;

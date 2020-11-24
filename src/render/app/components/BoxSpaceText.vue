@@ -15,13 +15,6 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Options, Vue } from "vue-class-component";
-
-@Options({})
-export default class BoxSpaceText extends Vue {}
-</script>
-
 <style scoped>
 .box-space {
   margin-top: 10px;

@@ -27,6 +27,10 @@ export const setupMenuFactory = (
       ],
     },
     {
+      label: "Edit",
+      role: "editMenu",
+    },
+    {
       label: "Journal",
       submenu: [
         {

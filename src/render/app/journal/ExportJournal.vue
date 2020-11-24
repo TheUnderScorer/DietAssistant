@@ -1,8 +1,8 @@
 <template>
   <div>
-    <button :disabled="isExporting" class="ignore-export" @click="exportAsImg">
+    <Button :disabled="isExporting" class="ignore-export" @click="exportAsImg">
       Export as screenshot
-    </button>
+    </Button>
   </div>
 </template>
 
