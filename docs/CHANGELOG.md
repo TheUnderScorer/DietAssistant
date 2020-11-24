@@ -1,3 +1,12 @@
+# [1.9.0](https://github.com/TheUnderScorer/DietAssistant/compare/v1.8.0...v1.9.0) (2020-11-24)
+
+
+### Features
+
+* Improve UI ([966b438](https://github.com/TheUnderScorer/DietAssistant/commit/966b4382b8f49f2009006b35120701a14f54d2e9))
+* Paste ingredients ([28ea8ff](https://github.com/TheUnderScorer/DietAssistant/commit/28ea8ff20ed2d62eb849cfd15effdd743ea43519))
+* Replace "jak w przepisie na" on weekday change ([057ef6c](https://github.com/TheUnderScorer/DietAssistant/commit/057ef6c67da8a938c07784edfce68fd952c8ec2c))
+
 # [1.8.0](https://github.com/TheUnderScorer/DietAssistant/compare/v1.7.0...v1.8.0) (2020-10-22)
 
 
